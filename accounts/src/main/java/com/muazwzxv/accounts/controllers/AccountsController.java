@@ -1,5 +1,6 @@
 package com.muazwzxv.accounts.controllers;
 
+import com.muazwzxv.accounts.constants.AccountsConstants;
 import com.muazwzxv.accounts.dto.CustomerDto;
 import com.muazwzxv.accounts.dto.ResponseDto;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,6 @@ public class AccountsController {
 
         return ResponseEntity.
                 status(HttpStatus.CREATED).
-                body(null);
+                body(new ResponseDto(AccountsConstants.STATUS_201, AccountsConstants.MESSAGE_201));
     }
 }

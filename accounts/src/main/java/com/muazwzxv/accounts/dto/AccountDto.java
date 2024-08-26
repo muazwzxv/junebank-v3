@@ -8,3 +8,4 @@ public class AccountDto {
     private String accountType;
     private String branchAddress;
 }
+
