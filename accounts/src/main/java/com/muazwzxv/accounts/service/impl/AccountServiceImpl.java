@@ -1,10 +1,13 @@
 package com.muazwzxv.accounts.service.impl;
 
 import com.muazwzxv.accounts.constants.AccountsConstants;
+import com.muazwzxv.accounts.dto.AccountDto;
 import com.muazwzxv.accounts.dto.CustomerDto;
 import com.muazwzxv.accounts.entities.Accounts;
 import com.muazwzxv.accounts.entities.Customer;
 import com.muazwzxv.accounts.exception.CustomerAlreadyExistsException;
+import com.muazwzxv.accounts.exception.ResourceNotFoundException;
+import com.muazwzxv.accounts.mapper.AccountsMapper;
 import com.muazwzxv.accounts.mapper.CustomerMapper;
 import com.muazwzxv.accounts.repository.AccountsRepository;
 import com.muazwzxv.accounts.repository.CustomersRepository;
@@ -25,7 +28,6 @@ public class AccountServiceImpl implements IAccountService {
     private static final Logger log = LoggerFactory.getLogger(AccountServiceImpl.class);
     private AccountsRepository accountsRepository;
     private CustomersRepository customersRepository;
-
 
     @Override
     public void createAccount(CustomerDto customerDto) {
@@ -58,5 +60,23 @@ public class AccountServiceImpl implements IAccountService {
         newAccount.setCreatedAt(LocalDateTime.now());
 
         return newAccount;
+    }
+
+    @Override
+    public CustomerDto fetchAccount(String phoneNumber) {
+        log.debug("starting fetch account flow");
+
+        Customer customer = this.customersRepository.findByMobileNumber(phoneNumber).orElseThrow(
+                () -> new ResourceNotFoundException("Customer", "mobileNumber", phoneNumber)
+        );
+        Accounts account = this.accountsRepository.findByCustomerId(customer.getCustomerId()).orElseThrow(
+                () -> new ResourceNotFoundException("Customer", "mobileNumber", phoneNumber)
+        );
+
+        CustomerDto customerDto = CustomerMapper.mapToCustomerDto(customer, new CustomerDto());
+        customerDto.setAccounts(AccountsMapper.mapToAccountsDto(account, new AccountDto()));
+
+
+        return customerDto;
     }
 }
