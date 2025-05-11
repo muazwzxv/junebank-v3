@@ -80,10 +80,12 @@ public class AccountServiceImpl implements IAccountService {
         return customerDto;
     }
 
+    @Override
     public boolean updateAccount(CustomerDto customerDto) {
         AccountDto customersAccount = customerDto.getAccounts();
         if (customersAccount == null) {
-            // TODO: invalid state in business journey
+            log.warn("Customer: {}, does not have an account", customerDto.getMobileNumber());
+            return false;
         }
 
         // fetch the account
@@ -98,7 +100,8 @@ public class AccountServiceImpl implements IAccountService {
         Customer customer = customersRepository.findById(customerID).orElseThrow(
                 () -> new ResourceNotFoundException("Customer", "CustomerID", customerID.toString())
         );
-
+        CustomerMapper.mapToCustomer(customer, customerDto);
+        customersRepository.save(customer);
 
         return true;
     }
