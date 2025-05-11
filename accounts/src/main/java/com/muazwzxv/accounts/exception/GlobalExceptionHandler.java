@@ -1,6 +1,7 @@
 package com.muazwzxv.accounts.exception;
 
 import com.muazwzxv.accounts.dto.ErrorDto;
+import com.muazwzxv.accounts.exception.accountException.NoAccountForUpdateException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -12,24 +13,36 @@ import java.time.LocalDateTime;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    // Error handling logic when this specific `CustomerAlreadyExistsException` is being thrown
     @ExceptionHandler(CustomerAlreadyExistsException.class)
     public ResponseEntity<ErrorDto> handleCustomerAlreadyExistException(CustomerAlreadyExistsException exception, WebRequest req) {
+        HttpStatus statusCode = HttpStatus.BAD_REQUEST;
         ErrorDto errResponseDTO = new ErrorDto(
                 req.getDescription(false),
-                HttpStatus.BAD_REQUEST,
+                statusCode,
                 exception.getMessage(),
                 LocalDateTime.now());
-        return new ResponseEntity<>(errResponseDTO, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(errResponseDTO, statusCode);
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ErrorDto> handleResourceNotFoundException(ResourceNotFoundException exception, WebRequest req) {
+        HttpStatus statusCode = HttpStatus.NOT_FOUND;
         ErrorDto errResponseDTO = new ErrorDto(
                 req.getDescription(false),
-                HttpStatus.NOT_FOUND,
+                statusCode,
                 exception.getMessage(),
                 LocalDateTime.now());
-        return new ResponseEntity<>(errResponseDTO, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(errResponseDTO, statusCode);
+    }
+
+    @ExceptionHandler(NoAccountForUpdateException.class)
+    public ResponseEntity<ErrorDto> handleNoAccountForUpdateException(NoAccountForUpdateException exception, WebRequest req) {
+        HttpStatus statusCode = HttpStatus.BAD_REQUEST;
+        ErrorDto errResponseDto = new ErrorDto(
+                req.getDescription(false),
+                statusCode,
+                exception.getMessage(),
+                LocalDateTime.now());
+        return new ResponseEntity<>(errResponseDto, statusCode);
     }
 }

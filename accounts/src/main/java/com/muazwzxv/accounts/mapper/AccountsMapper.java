@@ -1,6 +1,6 @@
 package com.muazwzxv.accounts.mapper;
 
-import com.muazwzxv.accounts.dto.AccountDto;
+import com.muazwzxv.accounts.dto.accountDTO.AccountDto;
 import com.muazwzxv.accounts.entities.Accounts;
 
 public class AccountsMapper {

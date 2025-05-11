@@ -1,4 +1,4 @@
-package com.muazwzxv.accounts.dto;
+package com.muazwzxv.accounts.dto.accountDTO;
 
 import lombok.Data;
 

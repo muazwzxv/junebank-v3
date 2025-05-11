@@ -1,12 +1,14 @@
 package com.muazwzxv.accounts.service.impl;
 
 import com.muazwzxv.accounts.constants.AccountsConstants;
-import com.muazwzxv.accounts.dto.AccountDto;
-import com.muazwzxv.accounts.dto.CustomerDto;
+import com.muazwzxv.accounts.dto.accountDTO.AccountDto;
+import com.muazwzxv.accounts.dto.accountDTO.UpdateAccountDto;
+import com.muazwzxv.accounts.dto.customerDTO.CustomerDto;
 import com.muazwzxv.accounts.entities.Accounts;
 import com.muazwzxv.accounts.entities.Customer;
 import com.muazwzxv.accounts.exception.CustomerAlreadyExistsException;
 import com.muazwzxv.accounts.exception.ResourceNotFoundException;
+import com.muazwzxv.accounts.exception.accountException.NoAccountForUpdateException;
 import com.muazwzxv.accounts.mapper.AccountsMapper;
 import com.muazwzxv.accounts.mapper.CustomerMapper;
 import com.muazwzxv.accounts.repository.AccountsRepository;
@@ -104,5 +106,26 @@ public class AccountServiceImpl implements IAccountService {
         customersRepository.save(customer);
 
         return true;
+    }
+
+    @Override
+    public CustomerDto updateAccountV2(UpdateAccountDto req) {
+        Customer customerEntity = customersRepository.findByMobileNumber(req.getMobileNumber()).orElseThrow(
+                () -> new ResourceNotFoundException("Customer", "MobileNumber", req.getMobileNumber().toString())
+        );
+
+        Accounts accountEntity = accountsRepository.findByCustomerId(customerEntity.getCustomerId()).orElseThrow(
+                () -> new NoAccountForUpdateException(customerEntity.getMobileNumber())
+        );
+
+        AccountsMapper.mapToAccounts(accountEntity, req.getAccount());
+        accountsRepository.save(accountEntity);
+
+        CustomerDto customerDto = CustomerMapper.mapToCustomerDto(customerEntity, new CustomerDto());
+        AccountDto accountDto = AccountsMapper.mapToAccountsDto(accountEntity, new AccountDto());
+
+        customerDto.setAccounts(accountDto);
+
+        return customerDto;
     }
 }

@@ -1,6 +1,6 @@
 package com.muazwzxv.accounts.mapper;
 
-import com.muazwzxv.accounts.dto.CustomerDto;
+import com.muazwzxv.accounts.dto.customerDTO.CustomerDto;
 import com.muazwzxv.accounts.entities.Customer;
 
 public class CustomerMapper {

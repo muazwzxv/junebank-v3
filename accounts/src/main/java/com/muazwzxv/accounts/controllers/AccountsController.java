@@ -1,8 +1,9 @@
 package com.muazwzxv.accounts.controllers;
 
 import com.muazwzxv.accounts.constants.AccountsConstants;
-import com.muazwzxv.accounts.dto.CustomerDto;
 import com.muazwzxv.accounts.dto.ResponseDto;
+import com.muazwzxv.accounts.dto.accountDTO.UpdateAccountDto;
+import com.muazwzxv.accounts.dto.customerDTO.CustomerDto;
 import com.muazwzxv.accounts.service.IAccountService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -34,8 +35,8 @@ public class AccountsController {
     }
 
     @PutMapping("/v1/update")
-    public ResponseEntity<ResponseDto> updateAccountDetails(@RequestBody CustomerDto customerDto) {
-        boolean isUpdated = this.accountService.updateAccount(customerDto);
+    public ResponseEntity<ResponseDto> updateAccountDetails(@RequestBody CustomerDto req) {
+        boolean isUpdated = this.accountService.updateAccount(req);
         if (isUpdated) {
             return ResponseEntity.status(HttpStatus.OK)
                     .body(new ResponseDto(AccountsConstants.STATUS_200, AccountsConstants.MESSAGE_200));
@@ -43,5 +44,12 @@ public class AccountsController {
 
         return ResponseEntity.status(HttpStatus.PRECONDITION_FAILED)
                 .body(new ResponseDto(AccountsConstants.STATUS_412, AccountsConstants.MESSAGE_NO_ACCOUNT_UPDATE));
+    }
+
+    @PutMapping("/v2/update")
+    public ResponseEntity<CustomerDto> updateAccountV2(@RequestBody UpdateAccountDto req) {
+        CustomerDto customerDto = this.accountService.updateAccountV2(req);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(customerDto);
     }
 }

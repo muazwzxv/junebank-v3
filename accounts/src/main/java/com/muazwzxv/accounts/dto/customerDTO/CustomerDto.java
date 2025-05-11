@@ -1,5 +1,6 @@
-package com.muazwzxv.accounts.dto;
+package com.muazwzxv.accounts.dto.customerDTO;
 
+import com.muazwzxv.accounts.dto.accountDTO.AccountDto;
 import lombok.Data;
 
 @Data
