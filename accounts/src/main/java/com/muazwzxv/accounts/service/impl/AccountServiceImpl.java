@@ -118,7 +118,10 @@ public class AccountServiceImpl implements IAccountService {
                 () -> new NoAccountForUpdateException(customerEntity.getMobileNumber())
         );
 
-        AccountsMapper.mapToAccounts(accountEntity, req.getAccount());
+        // update allowed for these
+        accountEntity.setBranchAddress(req.getBranchAddress());
+        accountEntity.setAccountType(req.getAccountType());
+
         accountsRepository.save(accountEntity);
 
         CustomerDto customerDto = CustomerMapper.mapToCustomerDto(customerEntity, new CustomerDto());

@@ -5,5 +5,7 @@ import lombok.Data;
 @Data
 public class UpdateAccountDto {
     private String mobileNumber;
-    private AccountDto account;
+    private String accountType;
+    private String branchAddress;
 }
+
