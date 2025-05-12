@@ -53,9 +53,11 @@ public class AccountsController {
                 .body(customerDto);
     }
 
-    @DeleteMapping("")
-    public ResponseEntity<ResponseDto> deleteAccount() {
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(null);
+    @DeleteMapping("/v2/delete")
+    public ResponseEntity<ResponseDto> deleteAccount(@RequestParam Long accountNumber) {
+        this.accountService.deleteAccount(accountNumber);
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).
+                body(null);
     }
 }

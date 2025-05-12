@@ -20,5 +20,5 @@ public interface IAccountService {
 
     CustomerDto updateAccountV2(UpdateAccountDto req);
 
-    void deleteAccount(String accountNumber);
+    void deleteAccount(Long accountNumber);
 }

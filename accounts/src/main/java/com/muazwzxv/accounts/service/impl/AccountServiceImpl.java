@@ -74,13 +74,12 @@ public class AccountServiceImpl implements IAccountService {
         Customer customer = this.customersRepository.findByMobileNumber(phoneNumber).orElseThrow(
                 () -> new ResourceNotFoundException("Customer", "mobileNumber", phoneNumber)
         );
-        Accounts account = this.accountsRepository.findByCustomerId(customer.getCustomerId()).orElseThrow(
-                () -> new ResourceNotFoundException("Customer", "mobileNumber", phoneNumber)
-        );
-
         CustomerDto customerDto = CustomerMapper.mapToCustomerDto(customer, new CustomerDto());
-        customerDto.setAccounts(AccountsMapper.mapToAccountsDto(account, new AccountDto()));
 
+        Optional<Accounts> accountResolver = this.accountsRepository.findByCustomerId(customer.getCustomerId());
+        accountResolver.ifPresent(
+                accounts -> customerDto.setAccounts(AccountsMapper.mapToAccountsDto(accounts, new AccountDto()))
+        );
 
         return customerDto;
     }
@@ -136,10 +135,10 @@ public class AccountServiceImpl implements IAccountService {
     }
 
     @Override
-    public void deleteAccount(String accountNumber) {
+    public void deleteAccount(Long accountNumber) {
         try {
             Accounts accountEntity = this.accountsRepository.findByAccountNumber(accountNumber).orElseThrow(
-                    () -> new ResourceNotFoundException("Account", "accountNumber", accountNumber)
+                    () -> new ResourceNotFoundException("Account", "accountNumber", accountNumber.toString())
             );
             this.accountsRepository.delete(accountEntity);
         } catch (QueryTimeoutException ex) {

@@ -1,9 +1,9 @@
 package com.muazwzxv.accounts.exception;
 
 import com.muazwzxv.accounts.dto.ErrorDto;
+import com.muazwzxv.accounts.exception.accountException.AccountOperationException;
 import com.muazwzxv.accounts.exception.accountException.NoAccountForUpdateException;
 import com.muazwzxv.accounts.exception.customerException.CustomerAlreadyExistsException;
-import org.springframework.dao.QueryTimeoutException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -48,8 +48,8 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errResponseDto, statusCode);
     }
 
-    @ExceptionHandler(QueryTimeoutException.class)
-    public ResponseEntity<ErrorDto> handleQueryTimeoutException(QueryTimeoutException exception, WebRequest req) {
+    @ExceptionHandler(AccountOperationException.class)
+    public ResponseEntity<ErrorDto> handleQueryTimeoutException(AccountOperationException exception, WebRequest req) {
         HttpStatus statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
         ErrorDto errResponseDto = new ErrorDto(
                 req.getDescription(false),
@@ -59,4 +59,14 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errResponseDto, statusCode);
     }
 
+    @ExceptionHandler(UnexpectedErrorException.class)
+    public ResponseEntity<ErrorDto> handleUnexpectedException(UnexpectedErrorException exception, WebRequest req) {
+        HttpStatus statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
+        ErrorDto errResponseDto = new ErrorDto(
+                req.getDescription(false),
+                statusCode,
+                "INTERNAL_ERROR",
+                LocalDateTime.now());
+        return new ResponseEntity<>(errResponseDto, statusCode);
+    }
 }
