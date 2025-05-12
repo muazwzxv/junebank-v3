@@ -6,9 +6,9 @@ import com.muazwzxv.accounts.dto.accountDTO.UpdateAccountDto;
 import com.muazwzxv.accounts.dto.customerDTO.CustomerDto;
 import com.muazwzxv.accounts.entities.Accounts;
 import com.muazwzxv.accounts.entities.Customer;
-import com.muazwzxv.accounts.exception.CustomerAlreadyExistsException;
 import com.muazwzxv.accounts.exception.ResourceNotFoundException;
 import com.muazwzxv.accounts.exception.accountException.NoAccountForUpdateException;
+import com.muazwzxv.accounts.exception.customerException.CustomerAlreadyExistsException;
 import com.muazwzxv.accounts.mapper.AccountsMapper;
 import com.muazwzxv.accounts.mapper.CustomerMapper;
 import com.muazwzxv.accounts.repository.AccountsRepository;
@@ -17,6 +17,7 @@ import com.muazwzxv.accounts.service.IAccountService;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.QueryTimeoutException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -130,5 +131,23 @@ public class AccountServiceImpl implements IAccountService {
         customerDto.setAccounts(accountDto);
 
         return customerDto;
+    }
+
+    @Override
+    public boolean deleteAccount(String accountNumber) {
+        try {
+            Accounts accountEntity = this.accountsRepository.findByAccountNumber(accountNumber).orElseThrow(
+                    () -> new ResourceNotFoundException("Account", "accountNumber", accountNumber)
+            );
+
+            this.accountsRepository.delete(accountEntity);
+            return true;
+        } catch (QueryTimeoutException ex) {
+            log.error("query timeout err: {}", ex.getMessage());
+            throw ex;
+        } catch (ResourceNotFoundException ex) {
+            log.error("Account not found: {}", ex.getMessage());
+            throw ex;
+        }
     }
 }

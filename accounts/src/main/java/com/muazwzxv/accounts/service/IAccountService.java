@@ -19,4 +19,6 @@ public interface IAccountService {
     boolean updateAccount(CustomerDto customerDto);
 
     CustomerDto updateAccountV2(UpdateAccountDto req);
+
+    boolean deleteAccount(String accountNumber);
 }

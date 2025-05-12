@@ -1,4 +1,4 @@
-package com.muazwzxv.accounts.exception;
+package com.muazwzxv.accounts.exception.customerException;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

@@ -52,4 +52,10 @@ public class AccountsController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(customerDto);
     }
+
+    @DeleteMapping("")
+    public ResponseEntity<ResponseDto> deleteAccount() {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(null);
+    }
 }
