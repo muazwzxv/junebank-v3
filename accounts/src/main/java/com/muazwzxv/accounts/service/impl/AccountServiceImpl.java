@@ -7,6 +7,8 @@ import com.muazwzxv.accounts.dto.customerDTO.CustomerDto;
 import com.muazwzxv.accounts.entities.Accounts;
 import com.muazwzxv.accounts.entities.Customer;
 import com.muazwzxv.accounts.exception.ResourceNotFoundException;
+import com.muazwzxv.accounts.exception.UnexpectedErrorException;
+import com.muazwzxv.accounts.exception.accountException.AccountOperationException;
 import com.muazwzxv.accounts.exception.accountException.NoAccountForUpdateException;
 import com.muazwzxv.accounts.exception.customerException.CustomerAlreadyExistsException;
 import com.muazwzxv.accounts.mapper.AccountsMapper;
@@ -134,20 +136,21 @@ public class AccountServiceImpl implements IAccountService {
     }
 
     @Override
-    public boolean deleteAccount(String accountNumber) {
+    public void deleteAccount(String accountNumber) {
         try {
             Accounts accountEntity = this.accountsRepository.findByAccountNumber(accountNumber).orElseThrow(
                     () -> new ResourceNotFoundException("Account", "accountNumber", accountNumber)
             );
-
             this.accountsRepository.delete(accountEntity);
-            return true;
         } catch (QueryTimeoutException ex) {
             log.error("query timeout err: {}", ex.getMessage());
-            throw ex;
+            throw new AccountOperationException("timeout occurred while attempting to delete account: " + accountNumber, ex);
         } catch (ResourceNotFoundException ex) {
-            log.error("Account not found: {}", ex.getMessage());
+            log.warn("Account not found: {}", ex.getMessage());
             throw ex;
+        } catch (Exception ex) {
+            log.error("unexpected error when deleting account: {}", ex.getMessage());
+            throw new UnexpectedErrorException("unexpected error when deleting account: {}" + ex.getMessage(), ex);
         }
     }
 }

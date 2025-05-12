@@ -20,5 +20,5 @@ public interface IAccountService {
 
     CustomerDto updateAccountV2(UpdateAccountDto req);
 
-    boolean deleteAccount(String accountNumber);
+    void deleteAccount(String accountNumber);
 }
