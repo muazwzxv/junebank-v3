@@ -3,6 +3,7 @@ package com.muazwzxv.accounts.service.impl;
 import com.muazwzxv.accounts.constants.AccountsConstants;
 import com.muazwzxv.accounts.dto.accountDTO.AccountDto;
 import com.muazwzxv.accounts.dto.accountDTO.UpdateAccountDto;
+import com.muazwzxv.accounts.dto.customerDTO.CreateCustomerDto;
 import com.muazwzxv.accounts.dto.customerDTO.CustomerDto;
 import com.muazwzxv.accounts.entities.Accounts;
 import com.muazwzxv.accounts.entities.Customer;
@@ -35,8 +36,13 @@ public class AccountServiceImpl implements IAccountService {
     private CustomersRepository customersRepository;
 
     @Override
-    public void createAccount(CustomerDto customerDto) {
-        Customer customer = CustomerMapper.mapToCustomer(new Customer(), customerDto);
+    public void createAccount(CreateCustomerDto customerDto) {
+        Customer customer = Customer.builder().
+                name(customerDto.getName()).
+                email(customerDto.getEmail()).
+                mobileNumber(customerDto.getMobileNumber()).
+                build();
+
         Optional<Customer> existingCustomer = this.customersRepository.findByMobileNumber(customer.getMobileNumber());
 
         if (existingCustomer.isPresent()) {
@@ -113,7 +119,7 @@ public class AccountServiceImpl implements IAccountService {
     @Override
     public CustomerDto updateAccountV2(UpdateAccountDto req) {
         Customer customerEntity = customersRepository.findByMobileNumber(req.getMobileNumber()).orElseThrow(
-                () -> new ResourceNotFoundException("Customer", "MobileNumber", req.getMobileNumber().toString())
+                () -> new ResourceNotFoundException("Customer", "MobileNumber", req.getMobileNumber())
         );
 
         Accounts accountEntity = accountsRepository.findByCustomerId(customerEntity.getCustomerId()).orElseThrow(

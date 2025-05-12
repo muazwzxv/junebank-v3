@@ -1,6 +1,7 @@
 package com.muazwzxv.accounts.service;
 
 import com.muazwzxv.accounts.dto.accountDTO.UpdateAccountDto;
+import com.muazwzxv.accounts.dto.customerDTO.CreateCustomerDto;
 import com.muazwzxv.accounts.dto.customerDTO.CustomerDto;
 
 public interface IAccountService {
@@ -8,7 +9,7 @@ public interface IAccountService {
     /**
      * @param customerDto - CustomerDTO Object
      */
-    void createAccount(CustomerDto customerDto);
+    void createAccount(CreateCustomerDto customerDto);
 
     /**
      * @param phoneNumber
