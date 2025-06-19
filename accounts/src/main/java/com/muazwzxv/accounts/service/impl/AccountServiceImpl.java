@@ -23,7 +23,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.dao.QueryTimeoutException;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.Random;
 
@@ -49,8 +48,9 @@ public class AccountServiceImpl implements IAccountService {
             throw new CustomerAlreadyExistsException("customer registered with number " + customer.getMobileNumber());
         }
 
-        customer.setCreatedBy("CLIENT");
-        customer.setCreatedAt(LocalDateTime.now());
+//        JPA provided a way to update these for auditing, but i refer writing it down myself lmao
+//        customer.setCreatedBy("CLIENT");
+//        customer.setCreatedAt(LocalDateTime.now());
 
         Customer savedCustomer = this.customersRepository.save(customer);
         Accounts newCustomerSavingAccounts = this.createNewAccount(savedCustomer);
@@ -67,8 +67,9 @@ public class AccountServiceImpl implements IAccountService {
         newAccount.setAccountNumber(randomAccNumber);
         newAccount.setAccountType(AccountsConstants.SAVINGS);
         newAccount.setBranchAddress(AccountsConstants.ADDRESS);
-        newAccount.setCreatedBy("CLIENT");
-        newAccount.setCreatedAt(LocalDateTime.now());
+
+//        newAccount.setCreatedBy("CLIENT");
+//        newAccount.setCreatedAt(LocalDateTime.now());
 
         return newAccount;
     }

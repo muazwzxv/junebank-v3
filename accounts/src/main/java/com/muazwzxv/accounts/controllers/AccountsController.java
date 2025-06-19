@@ -32,7 +32,9 @@ public class AccountsController {
     }
 
     @GetMapping("/v1/fetch")
-    public ResponseEntity<CustomerDto> fetchAccountDetails(@RequestParam @NotEmpty String mobileNumber) {
+    public ResponseEntity<CustomerDto> fetchAccountDetails(
+            @RequestParam @NotEmpty(message = "mobile number cannot be empty") String mobileNumber
+    ) {
         CustomerDto customerDto = this.accountService.fetchAccount(mobileNumber);
         return ResponseEntity.
                 status(HttpStatus.OK).
@@ -40,7 +42,7 @@ public class AccountsController {
     }
 
     @PutMapping("/v1/update")
-    public ResponseEntity<ResponseDto> updateAccountDetails(@RequestBody CustomerDto req) {
+    public ResponseEntity<ResponseDto> updateAccountDetails(@Valid @RequestBody CustomerDto req) {
         boolean isUpdated = this.accountService.updateAccount(req);
         if (isUpdated) {
             return ResponseEntity.status(HttpStatus.OK)
@@ -52,14 +54,16 @@ public class AccountsController {
     }
 
     @PutMapping("/v2/update")
-    public ResponseEntity<CustomerDto> updateAccountV2(@RequestBody UpdateAccountDto req) {
+    public ResponseEntity<CustomerDto> updateAccountV2(@Valid @RequestBody UpdateAccountDto req) {
         CustomerDto customerDto = this.accountService.updateAccountV2(req);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(customerDto);
     }
 
     @DeleteMapping("/v2/delete")
-    public ResponseEntity<ResponseDto> deleteAccount(@RequestParam Long accountNumber) {
+    public ResponseEntity<ResponseDto> deleteAccount(
+            @RequestParam @NotEmpty(message = "account number cannot be empty") Long accountNumber
+    ) {
         this.accountService.deleteAccount(accountNumber);
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).
