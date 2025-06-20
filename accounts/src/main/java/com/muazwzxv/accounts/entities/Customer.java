@@ -17,6 +17,9 @@ public class Customer extends BaseEntity {
     @Column(name = "customer_id")
     private Long customerId;
 
+    @Column(name = "customer_uuid")
+    private String customerUUID;
+
     @Column(name = "name")
     private String name;
 

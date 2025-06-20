@@ -1,4 +1,4 @@
-package com.muazwzxv.accounts;
+package com.muazwzxv.loanservice;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;
@@ -10,13 +10,13 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 @EnableJpaAuditing(auditorAwareRef = "auditAwareImpl")
 @OpenAPIDefinition(
         info = @Info(
-                title = "account-service",
-                description = "service responsible for handling accounts lifecycle",
+                title = "loan-service",
+                description = "service responsible for handling loan lifecycle",
                 version = "v1"
         )
 )
-public class AccountsApplication {
+public class LoanServiceApplication {
     public static void main(String[] args) {
-        SpringApplication.run(AccountsApplication.class, args);
+        SpringApplication.run(LoanServiceApplication.class, args);
     }
 }
