@@ -2,7 +2,9 @@ package com.muazwzxv.loanservice.controllers.applications;
 
 import com.muazwzxv.loanservice.controllers.applications.payload.CreateLoanApplicationResponse;
 import com.muazwzxv.loanservice.controllers.applications.payload.GetApplicationsResponse;
-import com.muazwzxv.loanservice.dto.application.ApplicationDto;
+import com.muazwzxv.loanservice.dto.ApplicationDto;
+import com.muazwzxv.loanservice.service.applicant.IApplicantService;
+import com.muazwzxv.loanservice.service.offer.IOfferService;
 import jakarta.validation.Valid;
 import com.muazwzxv.loanservice.controllers.applications.payload.CreateLoanApplicationRequest;
 import jakarta.validation.constraints.NotEmpty;
@@ -15,6 +17,10 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(path = "/api", produces = {MediaType.APPLICATION_JSON_VALUE})
 @AllArgsConstructor
 public class ApplicationsController {
+
+    private IApplicantService applicationService;
+    private IApplicantService applicantService;
+    private IOfferService offerService;
 
     @PostMapping("/v1/application/create")
     public ResponseEntity<CreateLoanApplicationResponse> createLoanApplication(

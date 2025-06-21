@@ -1,4 +1,4 @@
-package com.muazwzxv.loanservice.dto.application;
+package com.muazwzxv.loanservice.dto;
 
 import lombok.Data;
 

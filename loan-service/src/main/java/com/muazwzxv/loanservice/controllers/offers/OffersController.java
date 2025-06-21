@@ -2,7 +2,7 @@ package com.muazwzxv.loanservice.controllers.offers;
 
 import com.muazwzxv.loanservice.controllers.offers.payload.SimulateOfferRequest;
 import com.muazwzxv.loanservice.controllers.offers.payload.SimulateOfferResponse;
-import com.muazwzxv.loanservice.dto.offer.OfferDto;
+import com.muazwzxv.loanservice.dto.OfferDto;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import org.springframework.http.ResponseEntity;
