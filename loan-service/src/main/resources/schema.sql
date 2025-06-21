@@ -34,3 +34,15 @@ CREATE TABLE IF NOT EXISTS `offer` (
     `updated_at` date DEFAULT NULL,
     `updated_by` varchar(20) DEFAULT NULL
 );
+
+CREATE TABLE IF NOT EXISTS `hold_code` (
+    `id` int AUTO_INCREMENT PRIMARY KEY,
+    `applicant_uuid` varchar(36),
+    `rule` varchar,
+    `status` varchar(30),
+
+    `created_at` date NOT NULL,
+    `created_by` varchar(20) NOT NULL,
+    `updated_at` date DEFAULT NULL,
+    `updated_by` varchar(20) DEFAULT NULL
+);
