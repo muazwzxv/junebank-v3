@@ -1,7 +1,7 @@
 package com.muazwzxv.loanservice.controllers.applications;
 
 import com.muazwzxv.loanservice.controllers.applications.payload.CreateLoanApplicationResponse;
-import com.muazwzxv.loanservice.dto.ResponseDto;
+import com.muazwzxv.loanservice.controllers.applications.payload.GetApplicationsResponse;
 import com.muazwzxv.loanservice.dto.application.ApplicationDto;
 import jakarta.validation.Valid;
 import com.muazwzxv.loanservice.controllers.applications.payload.CreateLoanApplicationRequest;
@@ -39,7 +39,7 @@ public class ApplicationsController {
     }
 
     @GetMapping("/v1/applications")
-    public ResponseEntity<ResponseDto> getApplicationsByApplicantUUID(
+    public ResponseEntity<GetApplicationsResponse> getApplicationsByApplicantUUID(
             @RequestParam @NotEmpty(message = "uuid cannot be empty") String applicantUUID
     ) {
         // TODO: call service to query and return proper data
