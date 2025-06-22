@@ -4,7 +4,9 @@ import com.muazwzxv.loanservice.LoanServiceApplication;
 import com.muazwzxv.loanservice.dto.ApplicationDto;
 import com.muazwzxv.loanservice.entities.ApplicantEntity;
 import com.muazwzxv.loanservice.entities.ApplicationEntity;
+import com.muazwzxv.loanservice.exception.ResourceNotFoundException;
 import com.muazwzxv.loanservice.exception.applicationException.ApplicationInProgressException;
+import com.muazwzxv.loanservice.mapper.ApplicationMapper;
 import com.muazwzxv.loanservice.repository.ApplicantRepository;
 import com.muazwzxv.loanservice.repository.ApplicationRepository;
 import com.muazwzxv.loanservice.service.application.payload.CreateLoanApplicationRequest;
@@ -23,6 +25,7 @@ public class ApplicationServiceImpl implements IApplicationService{
 
     private ApplicationRepository applicationRepository;
     private ApplicantRepository applicantRepository;
+    private ApplicationMapper applicationMapper;
 
     @Override
     public CreateLoanApplicationResponse createLoanApplication(CreateLoanApplicationRequest request) {
@@ -78,7 +81,12 @@ public class ApplicationServiceImpl implements IApplicationService{
 
     @Override
     public ApplicationDto getApplication(String applicationUUID) {
-        return null;
+        log.info("querying application with applicationUUID: {}", applicationUUID);
+        Optional<ApplicationEntity> applicationOptional = this.applicationRepository.findByApplicationUUID(applicationUUID);
+        if (applicationOptional.isEmpty()) {
+            throw new ResourceNotFoundException("Application", "applicationUUID", applicationUUID);
+        }
+        return this.applicationMapper.toDto(applicationOptional.get());
     }
 
     @Override

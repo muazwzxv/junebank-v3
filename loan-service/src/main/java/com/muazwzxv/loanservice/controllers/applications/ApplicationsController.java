@@ -47,9 +47,8 @@ public class ApplicationsController {
     public ResponseEntity<ApplicationDto> getApplicationByUUID(
             @RequestParam @NotEmpty(message = "uuid cannot be empty") String applicationUUID
     ) {
-        // TODO: call service to query and return proper data
-        // return application belonging to a specific customer
-        return null;
+        ApplicationDto applicationDto = this.applicationService.getApplication(applicationUUID);
+        return ResponseEntity.ok(applicationDto);
     }
 
     @GetMapping("/v1/applications")
