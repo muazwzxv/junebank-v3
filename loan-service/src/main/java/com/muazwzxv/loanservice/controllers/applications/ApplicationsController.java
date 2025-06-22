@@ -15,6 +15,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(path = "/api", produces = {MediaType.APPLICATION_JSON_VALUE})
 @AllArgsConstructor
@@ -43,10 +45,9 @@ public class ApplicationsController {
                 .build());
     }
 
-    @GetMapping("/v1/application")
+    @GetMapping("/v1/application/{applicationUUID}")
     public ResponseEntity<ApplicationDto> getApplicationByUUID(
-            @RequestParam @NotEmpty(message = "uuid cannot be empty") String applicationUUID
-    ) {
+            @PathVariable @NotEmpty(message = "uuid cannot be empty") String applicationUUID) {
         ApplicationDto applicationDto = this.applicationService.getApplication(applicationUUID);
         return ResponseEntity.ok(applicationDto);
     }
@@ -55,8 +56,11 @@ public class ApplicationsController {
     public ResponseEntity<GetApplicationsRespHttp> getApplicationsByApplicantUUID(
             @RequestParam @NotEmpty(message = "uuid cannot be empty") String applicantUUID
     ) {
-        // TODO: call service to query and return proper data
-        // return all applications belonging to a specific customer
-        return null;
+        List<ApplicationDto> applicationList = this.applicationService.getApplicationsByApplicantUUID(applicantUUID);
+        return ResponseEntity.ok(
+            GetApplicationsRespHttp.builder()
+                .applications(applicationList)
+                .build()
+        );
     }
 }

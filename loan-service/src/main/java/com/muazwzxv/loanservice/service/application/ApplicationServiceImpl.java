@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -89,8 +90,30 @@ public class ApplicationServiceImpl implements IApplicationService{
         return this.applicationMapper.toDto(applicationOptional.get());
     }
 
+//    My way of writing it
+//    @Override
+//    public List<ApplicationDto> getApplicationsByApplicantUUID(String applicantUUID) {
+//        log.info("querying applications for applicant: {}", applicantUUID);
+//
+//        List<ApplicationDto> applicationDtoList = new ArrayList<>();
+//        List<ApplicationEntity> applications = this.applicationRepository.findByApplicantUUID(applicantUUID);
+//
+//        if (!applications.isEmpty()) {
+//            for (ApplicationEntity applicationEntity : applications) {
+//                applicationDtoList.add(this.applicationMapper.toDto(applicationEntity));
+//            }
+//        }
+//        return applicationDtoList;
+//    }
+
+    // The idiomatic way using streams
     @Override
     public List<ApplicationDto> getApplicationsByApplicantUUID(String applicantUUID) {
-        return List.of();
+        log.info("querying applications for applicant: {}", applicantUUID);
+
+        return applicationRepository.findByApplicantUUID(applicantUUID)
+            .stream()
+            .map(applicationMapper::toDto)
+            .collect(Collectors.toList());
     }
 }
