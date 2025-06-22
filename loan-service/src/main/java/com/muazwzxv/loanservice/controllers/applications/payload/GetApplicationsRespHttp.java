@@ -6,6 +6,6 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class GetApplicationsResponse {
+public class GetApplicationsRespHttp {
     private List<ApplicationDto> applications;
 }

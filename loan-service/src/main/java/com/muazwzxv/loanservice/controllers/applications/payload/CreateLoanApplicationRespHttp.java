@@ -1,10 +1,11 @@
 package com.muazwzxv.loanservice.controllers.applications.payload;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
 import lombok.Data;
 
 @Data
-public class CreateLoanApplicationResponse {
+@Builder
+public class CreateLoanApplicationRespHttp {
     private String applicationUUID;
     private String status;
     private String statusReason;

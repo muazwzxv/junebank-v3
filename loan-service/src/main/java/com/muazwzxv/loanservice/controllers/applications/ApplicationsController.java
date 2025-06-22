@@ -1,13 +1,14 @@
 package com.muazwzxv.loanservice.controllers.applications;
 
-import com.muazwzxv.loanservice.controllers.applications.payload.CreateLoanApplicationResponse;
-import com.muazwzxv.loanservice.controllers.applications.payload.GetApplicationsResponse;
+import com.muazwzxv.loanservice.controllers.applications.payload.CreateLoanApplicationRespHttp;
+import com.muazwzxv.loanservice.controllers.applications.payload.GetApplicationsRespHttp;
 import com.muazwzxv.loanservice.dto.ApplicationDto;
 import com.muazwzxv.loanservice.service.applicant.IApplicantService;
 import com.muazwzxv.loanservice.service.application.IApplicationService;
+import com.muazwzxv.loanservice.service.application.payload.CreateLoanApplicationResponse;
 import com.muazwzxv.loanservice.service.offer.IOfferService;
+import com.muazwzxv.loanservice.service.application.payload.CreateLoanApplicationRequest;
 import jakarta.validation.Valid;
-import com.muazwzxv.loanservice.controllers.applications.payload.CreateLoanApplicationRequest;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
@@ -24,16 +25,22 @@ public class ApplicationsController {
     private IOfferService offerService;
 
     @PostMapping("/v1/application/create")
-    public ResponseEntity<CreateLoanApplicationResponse> createLoanApplication(
+    public ResponseEntity<CreateLoanApplicationRespHttp> createLoanApplication(
             @Valid @RequestBody CreateLoanApplicationRequest loanApplication
     ) {
-        // TODO: logic for creating loans
-        // 1 - verify if applicant information exists,
-        //     insert if exists
-        //       call customer service to validate customer, insert if legit
-        // 2 - create loan entry
-        // 3 - return loan application uuid, status, status_reason and timestamps
-        return null;
+        CreateLoanApplicationRequest req = CreateLoanApplicationRequest.builder().
+            email(loanApplication.getEmail())
+            .applicantUUID(loanApplication.getApplicantUUID())
+            .build();
+
+        CreateLoanApplicationResponse resp = this.applicationService.createLoanApplication(req);
+        return ResponseEntity.ok(
+            CreateLoanApplicationRespHttp.builder()
+                .applicationUUID(resp.getApplicationUUID())
+                .status(resp.getStatus())
+                .statusReason(resp.getStatusReason())
+                .createdAt(resp.getCreatedAt().toString())
+                .build());
     }
 
     @GetMapping("/v1/application")
@@ -46,7 +53,7 @@ public class ApplicationsController {
     }
 
     @GetMapping("/v1/applications")
-    public ResponseEntity<GetApplicationsResponse> getApplicationsByApplicantUUID(
+    public ResponseEntity<GetApplicationsRespHttp> getApplicationsByApplicantUUID(
             @RequestParam @NotEmpty(message = "uuid cannot be empty") String applicantUUID
     ) {
         // TODO: call service to query and return proper data
