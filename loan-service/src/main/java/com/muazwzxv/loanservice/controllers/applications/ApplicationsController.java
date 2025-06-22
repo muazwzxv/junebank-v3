@@ -4,6 +4,7 @@ import com.muazwzxv.loanservice.controllers.applications.payload.CreateLoanAppli
 import com.muazwzxv.loanservice.controllers.applications.payload.GetApplicationsResponse;
 import com.muazwzxv.loanservice.dto.ApplicationDto;
 import com.muazwzxv.loanservice.service.applicant.IApplicantService;
+import com.muazwzxv.loanservice.service.application.IApplicationService;
 import com.muazwzxv.loanservice.service.offer.IOfferService;
 import jakarta.validation.Valid;
 import com.muazwzxv.loanservice.controllers.applications.payload.CreateLoanApplicationRequest;
@@ -18,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 public class ApplicationsController {
 
-    private IApplicantService applicationService;
+    private IApplicationService applicationService;
     private IApplicantService applicantService;
     private IOfferService offerService;
 

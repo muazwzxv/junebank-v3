@@ -1,13 +1,11 @@
 package com.muazwzxv.loanservice.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Getter
+@Builder
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
