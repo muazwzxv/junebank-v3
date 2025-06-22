@@ -1,0 +1,40 @@
+services:
+  account-service:
+    image: "muazwazir1/accounts-service"
+    container_name: "account-service"
+    ports:
+      - "8080:8080"
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - junebank
+
+  loan-service:
+    image: "muazwazir1/loan-service"
+    container_name: "loan-service"
+    ports:
+      - "8090:8090"
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - junebank
+      -
+  card-service:
+    image: "muazwazir1/card-service"
+    container_name: "card-service"
+    ports:
+      - "8090:8090" # fix port mapping
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - junebank
+
+networks:
+  junebank:
+    driver: "bridge"
