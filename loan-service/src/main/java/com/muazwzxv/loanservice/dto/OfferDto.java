@@ -1,10 +1,12 @@
 package com.muazwzxv.loanservice.dto;
 
+import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDateTime;
 
 @Data
+@Builder
 public class OfferDto {
     private String applicationUUID;
     private String offeredLimit;

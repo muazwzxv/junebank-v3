@@ -3,10 +3,8 @@ package com.muazwzxv.loanservice.controllers.applications;
 import com.muazwzxv.loanservice.controllers.applications.payload.CreateLoanApplicationRespHttp;
 import com.muazwzxv.loanservice.controllers.applications.payload.GetApplicationsRespHttp;
 import com.muazwzxv.loanservice.dto.ApplicationDto;
-import com.muazwzxv.loanservice.service.applicant.IApplicantService;
 import com.muazwzxv.loanservice.service.application.IApplicationService;
 import com.muazwzxv.loanservice.service.application.payload.CreateLoanApplicationResponse;
-import com.muazwzxv.loanservice.service.offer.IOfferService;
 import com.muazwzxv.loanservice.service.application.payload.CreateLoanApplicationRequest;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
@@ -23,8 +21,6 @@ import java.util.List;
 public class ApplicationsController {
 
     private IApplicationService applicationService;
-    private IApplicantService applicantService;
-    private IOfferService offerService;
 
     @PostMapping("/v1/application/create")
     public ResponseEntity<CreateLoanApplicationRespHttp> createLoanApplication(

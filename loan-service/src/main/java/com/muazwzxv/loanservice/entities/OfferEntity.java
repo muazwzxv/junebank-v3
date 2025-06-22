@@ -2,12 +2,10 @@ package com.muazwzxv.loanservice.entities;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
+@Builder
 @Getter
 @Setter
 @AllArgsConstructor
@@ -18,6 +16,9 @@ public class OfferEntity extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
     @Column(name = "id")
     private Long id;
+
+    @Column(name = "offer_uuid")
+    private String offerUUID;
 
     @Column(name = "application_uuid")
     private String applicationUUID;

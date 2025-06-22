@@ -12,6 +12,5 @@ import java.util.Optional;
 public interface OfferRepository extends JpaRepository<OfferEntity, Long> {
 
     @Transactional
-    @Modifying
     Optional<OfferEntity> findByApplicationUUID(String applicationUUID);
 }

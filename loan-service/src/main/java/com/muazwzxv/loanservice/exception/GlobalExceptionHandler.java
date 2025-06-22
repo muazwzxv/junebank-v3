@@ -2,6 +2,7 @@ package com.muazwzxv.loanservice.exception;
 
 import com.muazwzxv.loanservice.dto.ErrorDto;
 import com.muazwzxv.loanservice.exception.applicationException.ApplicationInProgressException;
+import com.muazwzxv.loanservice.exception.offerException.OfferPendingException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -73,6 +74,18 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             .apiPath(req.getDescription(false))
             .errorCode(statusCode)
             .errorMessage("APPLICATION_IN_PROGRESS")
+            .errorTime(LocalDateTime.now())
+            .build();
+        return new ResponseEntity<>(errResponseDTO, statusCode);
+    }
+
+    @ExceptionHandler(OfferPendingException.class)
+    public ResponseEntity<ErrorDto> handleOfferPendingException(OfferPendingException exception, WebRequest req) {
+        HttpStatus statusCode = HttpStatus.BAD_REQUEST;
+        ErrorDto errResponseDTO = ErrorDto.builder()
+            .apiPath(req.getDescription(false))
+            .errorCode(statusCode)
+            .errorMessage("PENDING_OFFER")
             .errorTime(LocalDateTime.now())
             .build();
         return new ResponseEntity<>(errResponseDTO, statusCode);

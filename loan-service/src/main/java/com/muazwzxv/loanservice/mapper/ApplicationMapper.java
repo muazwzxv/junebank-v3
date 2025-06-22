@@ -2,7 +2,6 @@ package com.muazwzxv.loanservice.mapper;
 
 import com.muazwzxv.loanservice.dto.ApplicationDto;
 import com.muazwzxv.loanservice.entities.ApplicationEntity;
-import org.springframework.boot.actuate.autoconfigure.wavefront.WavefrontProperties;
 import org.springframework.stereotype.Component;
 
 @Component

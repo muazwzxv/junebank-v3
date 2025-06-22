@@ -24,6 +24,7 @@ CREATE TABLE IF NOT EXISTS `application` (
 
 CREATE TABLE IF NOT EXISTS `offer` (
     `id` int AUTO_INCREMENT PRIMARY KEY,
+    `offer_uuid` varchar(36),
     `application_uuid` varchar(36),
     `offered_limit` varchar,
     `offered_interest` varchar,
