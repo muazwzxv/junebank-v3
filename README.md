@@ -1,12 +1,12 @@
 
-## Assignment
 
 ### loan microservices
-- CRUD APIs
-- Database name
-- Be clever
+- applicants service
+- applications service
+- offer service
+
 
 ### cards microservices
-- CRUD APIs
-- Database name
-- Be clever
+- [ ] Database name
+- [ ] Be clever
+- [ ] Basic API to represents functions
