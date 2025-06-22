@@ -20,7 +20,6 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -35,7 +34,10 @@ public class OfferServiceImpl implements IOfferService{
     @Override
     public OfferDto getOffer(String applicationUUID) {
         log.info("get offer request with applicationUUID: {}", applicationUUID);
-        return null;
+        OfferEntity offer = this.offerRepository.findByApplicationUUID(applicationUUID).orElseThrow(
+            () -> new ResourceNotFoundException("Offer", "applicationUUID", applicationUUID)
+        );
+        return this.offerMapper.toDto(offer);
     }
 
     @Override

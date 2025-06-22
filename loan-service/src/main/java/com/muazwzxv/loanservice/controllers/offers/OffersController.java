@@ -36,7 +36,7 @@ public class OffersController {
     public ResponseEntity<OfferDto> getOffer(
             @RequestParam @NotEmpty(message = "uuid cannot be empty") String applicationUUID
     ) {
-        // TODO: logic to query existing offer
-        return null;
+        OfferDto offer = this.offerService.getOffer(applicationUUID);
+        return ResponseEntity.ok(offer);
     }
 }
