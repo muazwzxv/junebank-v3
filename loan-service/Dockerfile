@@ -8,4 +8,4 @@ MAINTAINER muazwazir1
 COPY target/loan-service-0.0.1-SNAPSHOT.jar loan-service-0.0.1-SNAPSHOT.jar
 
 # execute command to spawn container
-ENTRYPOINT ["java", "-jar", "accounts-0.0.1-SNAPSHOT.jar"]
+ENTRYPOINT ["java", "-jar", "loan-service-0.0.1-SNAPSHOT.jar"]
