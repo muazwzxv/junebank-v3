@@ -40,6 +40,7 @@ public class ApplicationServiceImpl implements IApplicationService{
                 .build();
             this.applicantRepository.save(newApplicantEntity); // global DB handler will resolve the error if there's issue
             applicantEntity = newApplicantEntity;
+            log.info("creating new applicant entry for Applicant: {}", request.getApplicantUUID());
         }
 
         // check if customer has existing ongoing application
@@ -48,6 +49,11 @@ public class ApplicationServiceImpl implements IApplicationService{
             for (ApplicationEntity applicationEntity : applicationEntityList) {
                 Set<String> validStatuses = Set.of("PROCESSING");
                 if (validStatuses.contains(applicationEntity.getStatus())) {
+                    log.warn("application already in progress for applicant: {}, application: {}, status: {}",
+                        applicationEntity.getApplicantUUID(),
+                        applicationEntity.getApplicationUUID(),
+                        applicationEntity.getStatus());
+
                     throw new ApplicationInProgressException(applicationEntity.getApplicantUUID(), applicationEntity.getApplicationUUID(), applicationEntity.getStatus());
                 }
             }

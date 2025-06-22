@@ -48,10 +48,6 @@ public class AccountServiceImpl implements IAccountService {
             throw new CustomerAlreadyExistsException("customer registered with number " + customer.getMobileNumber());
         }
 
-//        JPA provided a way to update these for auditing, but i refer writing it down myself lmao
-//        customer.setCreatedBy("CLIENT");
-//        customer.setCreatedAt(LocalDateTime.now());
-
         Customer savedCustomer = this.customersRepository.save(customer);
         Accounts newCustomerSavingAccounts = this.createNewAccount(savedCustomer);
 
