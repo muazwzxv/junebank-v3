@@ -27,7 +27,7 @@ services:
     image: "muazwazir1/card-service"
     container_name: "card-service"
     ports:
-      - "8090:8090" # fix port mapping
+      - "9000:9000"
     deploy:
       resources:
         limits:
