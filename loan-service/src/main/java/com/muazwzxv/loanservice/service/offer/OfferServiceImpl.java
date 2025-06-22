@@ -2,6 +2,7 @@ package com.muazwzxv.loanservice.service.offer;
 
 import com.muazwzxv.loanservice.LoanServiceApplication;
 import com.muazwzxv.loanservice.dto.OfferDto;
+import com.muazwzxv.loanservice.service.offer.payload.CreateLoanRequest;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +15,11 @@ public class OfferServiceImpl implements IOfferService{
 
     @Override
     public OfferDto getOffer(String applicationUUID) {
+        return null;
+    }
+
+    @Override
+    public CreateLoanRequest simulateLoanCreation(CreateLoanRequest createLoanRequest) {
         return null;
     }
 }

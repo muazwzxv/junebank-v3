@@ -44,22 +44,24 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ErrorDto> handleResourceNotFoundException(ResourceNotFoundException exception, WebRequest req) {
         HttpStatus statusCode = HttpStatus.NOT_FOUND;
-        ErrorDto errResponseDTO = new ErrorDto(
-                req.getDescription(false),
-                statusCode,
-                exception.getMessage(),
-                LocalDateTime.now());
+        ErrorDto errResponseDTO = ErrorDto.builder()
+            .apiPath(req.getDescription(false))
+            .errorCode(statusCode)
+            .errorMessage(exception.getMessage())
+            .errorTime(LocalDateTime.now())
+            .build();
         return new ResponseEntity<>(errResponseDTO, statusCode);
     }
 
     @ExceptionHandler(UnexpectedErrorException.class)
     public ResponseEntity<ErrorDto> handleUnexpectedException(UnexpectedErrorException exception, WebRequest req) {
         HttpStatus statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
-        ErrorDto errResponseDto = new ErrorDto(
-                req.getDescription(false),
-                statusCode,
-                "INTERNAL_ERROR",
-                LocalDateTime.now());
-        return new ResponseEntity<>(errResponseDto, statusCode);
+        ErrorDto errResponseDTO = ErrorDto.builder()
+            .apiPath(req.getDescription(false))
+            .errorCode(statusCode)
+            .errorMessage("INTERNAL_ERROR")
+            .errorTime(LocalDateTime.now())
+            .build();
+        return new ResponseEntity<>(errResponseDTO, statusCode);
     }
 }

@@ -2,26 +2,30 @@ package com.muazwzxv.loanservice.controllers.applicants;
 
 import com.muazwzxv.loanservice.controllers.applicants.payload.UpdateHoldCodeRequest;
 import com.muazwzxv.loanservice.controllers.applicants.payload.UpdateHoldCodeResponse;
+import com.muazwzxv.loanservice.dto.ApplicantDto;
 import com.muazwzxv.loanservice.dto.ResponseDto;
+import com.muazwzxv.loanservice.service.applicant.IApplicantService;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import jakarta.validation.constraints.NotEmpty;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api")
+@AllArgsConstructor
 public class ApplicantsController {
 
+    private IApplicantService applicantService;
+
     @GetMapping("/v1/applicant")
-    public ResponseEntity<ResponseDto> getApplicantInfo() {
-        // TODO: logic to fetch applicant data
-        // - validate payload
-        // - query the applicant information
-        // - transform entity to dto and respond accordingly
-        // - addition, query the existing hold code for customer as well
-        return null;
+    public ResponseEntity<ApplicantDto> getApplicantInfo(
+            @RequestParam @NotEmpty(message = "uuid cannot be empty") String applicantUUID
+    ) {
+        ApplicantDto applicantDto = this.applicantService.getApplicantByUUID(applicantUUID);
+        // TODO: addition, query the existing hold code for customer as well
+
+        return ResponseEntity.ok(applicantDto);
     }
 
     @PutMapping("/v1/applicant/hold-code")

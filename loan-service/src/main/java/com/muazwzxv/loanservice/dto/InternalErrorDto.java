@@ -4,17 +4,16 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.http.HttpStatus;
 
 import java.time.LocalDateTime;
 
-@Builder
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ErrorDto {
-    private String apiPath;
-    private HttpStatus errorCode;
-    private String errorMessage;
-    private LocalDateTime errorTime;
+public class InternalErrorDto {
+    private int status;
+    private String error;
+    private String message;
+    private LocalDateTime timestamp;
 }

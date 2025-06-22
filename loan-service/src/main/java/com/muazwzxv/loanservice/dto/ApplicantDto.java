@@ -7,11 +7,10 @@ import java.time.LocalDateTime;
 
 @Data
 @Builder
-public class ApplicationDto {
+public class ApplicantDto {
     private String applicantUUID;
-    private String applicationUUID;
+    private String email;
     private String status;
-    private String statusReason;
 
     private LocalDateTime createdAt;
     private String createdBy;
