@@ -8,6 +8,8 @@ import com.muazwzxv.loanservice.dto.OfferDto;
 import com.muazwzxv.loanservice.service.offer.IOfferService;
 import com.muazwzxv.loanservice.service.offer.payload.CreateLoanRequest;
 import com.muazwzxv.loanservice.service.offer.payload.CreateLoanResponse;
+import com.muazwzxv.loanservice.service.offer.payload.UpdateOfferReq;
+import com.muazwzxv.loanservice.service.offer.payload.UpdateOfferResp;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
@@ -46,6 +48,13 @@ public class OffersController {
     public ResponseEntity<UpdateOfferRespHttp> updateOffer(
         @Valid @RequestBody UpdateOfferReqHttp request
     ) {
-        return null;
+        UpdateOfferReq req = UpdateOfferReq.builder()
+            .offerUUID(request.getOfferUUID())
+            .status(request.getStatus())
+            .build();
+        UpdateOfferResp resp = this.offerService.updateOffer(req);
+        return ResponseEntity.ok(UpdateOfferRespHttp.builder()
+            .offer(resp.getOffer())
+            .build());
     }
 }

@@ -124,4 +124,16 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             .build();
         return new ResponseEntity<>(errResponseDTO, statusCode);
     }
+
+    @ExceptionHandler(BadInputException.class)
+    public ResponseEntity<ErrorDto> handleBadInputException(BadInputException exception, WebRequest req) {
+        HttpStatus statusCode = HttpStatus.BAD_REQUEST;
+        ErrorDto errResponseDTO = ErrorDto.builder()
+            .apiPath(req.getDescription(false))
+            .errorCode(statusCode)
+            .errorMessage(exception.getMessage())
+            .errorTime(LocalDateTime.now())
+            .build();
+        return new ResponseEntity<>(errResponseDTO, statusCode);
+    }
 }

@@ -7,6 +7,7 @@ import com.muazwzxv.loanservice.entities.OfferEntity;
 import com.muazwzxv.loanservice.enums.application.ApplicationStatus;
 import com.muazwzxv.loanservice.enums.application.ApplicationStatusReason;
 import com.muazwzxv.loanservice.enums.offer.OfferStatus;
+import com.muazwzxv.loanservice.exception.BadInputException;
 import com.muazwzxv.loanservice.exception.ResourceNotFoundException;
 import com.muazwzxv.loanservice.exception.UnexpectedErrorException;
 import com.muazwzxv.loanservice.exception.offerException.OfferInvalidStatusException;
@@ -27,6 +28,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -105,6 +107,17 @@ public class OfferServiceImpl implements IOfferService{
     @Transactional
     public UpdateOfferResp updateOffer(UpdateOfferReq req) {
         log.info("update offer request with offer: {}", req.getOfferUUID());
+
+        // no nice way to do it at controller level, imma park it here first
+        Set<String> validStatuses = Set.of(
+            OfferStatus.OFFER_ACCEPTED.getValue(),
+            OfferStatus.OFFER_DECLINED.getValue()
+        );
+        if (validStatuses.contains(req.getStatus())) {
+            log.warn("not a valid status, {}", req.getStatus());
+            throw new BadInputException("Offer", "status", req.getStatus());
+        }
+
         Optional<OfferEntity> optionalOfferEntity = this.offerRepository.findByOfferUUID(req.getOfferUUID());
         if (optionalOfferEntity.isEmpty()) {
             log.error("offer: {} does not exist", req.getOfferUUID());
