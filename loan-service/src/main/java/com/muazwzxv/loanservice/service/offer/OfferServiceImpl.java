@@ -9,7 +9,6 @@ import com.muazwzxv.loanservice.enums.application.ApplicationStatusReason;
 import com.muazwzxv.loanservice.enums.offer.OfferStatus;
 import com.muazwzxv.loanservice.exception.BadInputException;
 import com.muazwzxv.loanservice.exception.ResourceNotFoundException;
-import com.muazwzxv.loanservice.exception.UnexpectedErrorException;
 import com.muazwzxv.loanservice.exception.offerException.OfferInvalidStatusException;
 import com.muazwzxv.loanservice.exception.offerException.OfferPendingException;
 import com.muazwzxv.loanservice.mapper.OfferMapper;
@@ -23,7 +22,6 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -43,20 +41,10 @@ public class OfferServiceImpl implements IOfferService{
     @Override
     public OfferDto getOffer(String applicationUUID) {
         log.info("get offer request with applicationUUID: {}", applicationUUID);
-        try {
-            OfferEntity offer = this.offerRepository.findByApplicationUUID(applicationUUID).orElseThrow(
-                () -> new ResourceNotFoundException("Offer", "applicationUUID", applicationUUID)
-            );
-            return this.offerMapper.toDto(offer);
-        } catch (ResourceNotFoundException ex ) {
-            throw ex;
-        } catch (DataAccessException e) {
-            log.error("Database error during loan simulation for applicationUUID: {}", applicationUUID, e);
-            throw new UnexpectedErrorException("Database error during loan creation: " + e.getMessage(), e);
-        } catch (Exception e) {
-            log.error("Unexpected error during loan simulation for applicationUUID: {}", applicationUUID, e);
-            throw new UnexpectedErrorException("Unexpected error during loan creation: " + e.getMessage(), e);
-        }
+        OfferEntity offer = this.offerRepository.findByApplicationUUID(applicationUUID).orElseThrow(
+            () -> new ResourceNotFoundException("Offer", "applicationUUID", applicationUUID)
+        );
+        return this.offerMapper.toDto(offer);
     }
 
     @Override
