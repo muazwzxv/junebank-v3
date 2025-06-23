@@ -2,7 +2,10 @@ package com.muazwzxv.loanservice.exception;
 
 import com.muazwzxv.loanservice.dto.ErrorDto;
 import com.muazwzxv.loanservice.exception.applicationException.ApplicationInProgressException;
+import com.muazwzxv.loanservice.exception.offerException.OfferInvalidStatusException;
 import com.muazwzxv.loanservice.exception.offerException.OfferPendingException;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -20,6 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
@@ -86,6 +90,36 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             .apiPath(req.getDescription(false))
             .errorCode(statusCode)
             .errorMessage("PENDING_OFFER")
+            .errorTime(LocalDateTime.now())
+            .build();
+        return new ResponseEntity<>(errResponseDTO, statusCode);
+    }
+
+    @ExceptionHandler(OfferInvalidStatusException.class)
+    public ResponseEntity<ErrorDto> handleOfferInvalidStatus(OfferInvalidStatusException exception, WebRequest req) {
+        HttpStatus statusCode = HttpStatus.BAD_REQUEST;
+        ErrorDto errResponseDTO = ErrorDto.builder()
+            .apiPath(req.getDescription(false))
+            .errorCode(statusCode)
+            .errorMessage("OFFER_INVALID_STATUS")
+            .errorTime(LocalDateTime.now())
+            .build();
+        return new ResponseEntity<>(errResponseDTO, statusCode);
+    }
+
+    @ExceptionHandler(DataAccessException.class)
+    public ResponseEntity<ErrorDto> handleDataAccessException(DataAccessException exception, WebRequest req) {
+        log.error("Database error occurred - Path: {}, Exception Type: {}, Message: {}",
+            req.getDescription(false),
+            exception.getClass().getSimpleName(),
+            exception.getMessage(),
+            exception);
+
+        HttpStatus statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
+        ErrorDto errResponseDTO = ErrorDto.builder()
+            .apiPath(req.getDescription(false))
+            .errorCode(statusCode)
+            .errorMessage("INTERNAL_SERVER")
             .errorTime(LocalDateTime.now())
             .build();
         return new ResponseEntity<>(errResponseDTO, statusCode);

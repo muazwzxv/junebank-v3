@@ -2,6 +2,8 @@ package com.muazwzxv.loanservice.controllers.offers;
 
 import com.muazwzxv.loanservice.controllers.offers.payload.SimulateOfferRequestHttp;
 import com.muazwzxv.loanservice.controllers.offers.payload.SimulateOfferResponseHttp;
+import com.muazwzxv.loanservice.controllers.offers.payload.UpdateOfferReqHttp;
+import com.muazwzxv.loanservice.controllers.offers.payload.UpdateOfferRespHttp;
 import com.muazwzxv.loanservice.dto.OfferDto;
 import com.muazwzxv.loanservice.service.offer.IOfferService;
 import com.muazwzxv.loanservice.service.offer.payload.CreateLoanRequest;
@@ -38,5 +40,12 @@ public class OffersController {
     ) {
         OfferDto offer = this.offerService.getOffer(applicationUUID);
         return ResponseEntity.ok(offer);
+    }
+
+    @PutMapping("/v1/offer")
+    public ResponseEntity<UpdateOfferRespHttp> updateOffer(
+        @Valid @RequestBody UpdateOfferReqHttp request
+    ) {
+        return null;
     }
 }
