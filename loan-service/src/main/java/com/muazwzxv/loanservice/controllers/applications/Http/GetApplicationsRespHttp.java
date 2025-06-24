@@ -1,4 +1,4 @@
-package com.muazwzxv.loanservice.controllers.applications.payload;
+package com.muazwzxv.loanservice.controllers.applications.Http;
 
 import com.muazwzxv.loanservice.dto.ApplicationDto;
 import lombok.Builder;

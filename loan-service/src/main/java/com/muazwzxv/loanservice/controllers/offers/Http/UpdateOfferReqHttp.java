@@ -1,4 +1,4 @@
-package com.muazwzxv.loanservice.controllers.offers.payload;
+package com.muazwzxv.loanservice.controllers.offers.Http;
 
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;

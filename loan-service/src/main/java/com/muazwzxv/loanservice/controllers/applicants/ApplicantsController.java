@@ -1,7 +1,7 @@
 package com.muazwzxv.loanservice.controllers.applicants;
 
-import com.muazwzxv.loanservice.controllers.applicants.payload.UpdateHoldCodeRequest;
-import com.muazwzxv.loanservice.controllers.applicants.payload.UpdateHoldCodeResponse;
+import com.muazwzxv.loanservice.controllers.applicants.Http.UpdateHoldCodeReqHttp;
+import com.muazwzxv.loanservice.controllers.applicants.Http.UpdateHoldCodeRespHttp;
 import com.muazwzxv.loanservice.dto.ApplicantDto;
 import com.muazwzxv.loanservice.services.applicant.IApplicantService;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
@@ -28,8 +28,8 @@ public class ApplicantsController {
     }
 
     @PutMapping("/v1/applicant/hold-code")
-    public ResponseEntity<UpdateHoldCodeResponse> updateHoldCode(
-            @RequestBody UpdateHoldCodeRequest updateHoldCodeRequest
+    public ResponseEntity<UpdateHoldCodeReqHttp> updateHoldCode(
+            @RequestBody UpdateHoldCodeRespHttp updateHoldCodeRequest
     ) {
         // TODO: logic to handle this scenario
         // - validate payload

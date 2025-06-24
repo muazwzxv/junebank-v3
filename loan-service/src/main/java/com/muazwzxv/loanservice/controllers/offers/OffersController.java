@@ -1,9 +1,9 @@
 package com.muazwzxv.loanservice.controllers.offers;
 
-import com.muazwzxv.loanservice.controllers.offers.payload.SimulateOfferRequestHttp;
-import com.muazwzxv.loanservice.controllers.offers.payload.SimulateOfferResponseHttp;
-import com.muazwzxv.loanservice.controllers.offers.payload.UpdateOfferReqHttp;
-import com.muazwzxv.loanservice.controllers.offers.payload.UpdateOfferRespHttp;
+import com.muazwzxv.loanservice.controllers.offers.Http.SimulateOfferReqHttp;
+import com.muazwzxv.loanservice.controllers.offers.Http.SimulateOfferRespHttp;
+import com.muazwzxv.loanservice.controllers.offers.Http.UpdateOfferReqHttp;
+import com.muazwzxv.loanservice.controllers.offers.Http.UpdateOfferRespHttp;
 import com.muazwzxv.loanservice.dto.OfferDto;
 import com.muazwzxv.loanservice.services.offer.IOfferService;
 import com.muazwzxv.loanservice.services.offer.payload.CreateLoanRequest;
@@ -24,14 +24,14 @@ public class OffersController {
     private IOfferService offerService;
 
     @PostMapping("/v1/simulate/offer")
-    public ResponseEntity<SimulateOfferResponseHttp> simulateOffer(
-            @Valid @RequestBody SimulateOfferRequestHttp request
+    public ResponseEntity<SimulateOfferRespHttp> simulateOffer(
+            @Valid @RequestBody SimulateOfferReqHttp request
     ) {
         CreateLoanResponse resp = this.offerService.simulateLoanCreation(CreateLoanRequest.builder()
             .applicationUUID(request.getApplicationUUID())
             .build());
 
-        return ResponseEntity.ok(SimulateOfferResponseHttp.builder()
+        return ResponseEntity.ok(SimulateOfferRespHttp.builder()
             .offer(resp.getOffer())
             .build());
     }

@@ -1,7 +1,7 @@
 package com.muazwzxv.loanservice.controllers.applications;
 
-import com.muazwzxv.loanservice.controllers.applications.payload.CreateLoanApplicationRespHttp;
-import com.muazwzxv.loanservice.controllers.applications.payload.GetApplicationsRespHttp;
+import com.muazwzxv.loanservice.controllers.applications.Http.CreateLoanApplicationRespHttp;
+import com.muazwzxv.loanservice.controllers.applications.Http.GetApplicationsRespHttp;
 import com.muazwzxv.loanservice.dto.ApplicationDto;
 import com.muazwzxv.loanservice.services.application.IApplicationService;
 import com.muazwzxv.loanservice.services.application.payload.CreateLoanApplicationResponse;

@@ -1,4 +1,4 @@
-package com.muazwzxv.loanservice.controllers.applications.payload;
+package com.muazwzxv.loanservice.controllers.applications.Http;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Email;
