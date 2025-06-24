@@ -5,11 +5,11 @@ import com.muazwzxv.loanservice.controllers.offers.payload.SimulateOfferResponse
 import com.muazwzxv.loanservice.controllers.offers.payload.UpdateOfferReqHttp;
 import com.muazwzxv.loanservice.controllers.offers.payload.UpdateOfferRespHttp;
 import com.muazwzxv.loanservice.dto.OfferDto;
-import com.muazwzxv.loanservice.service.offer.IOfferService;
-import com.muazwzxv.loanservice.service.offer.payload.CreateLoanRequest;
-import com.muazwzxv.loanservice.service.offer.payload.CreateLoanResponse;
-import com.muazwzxv.loanservice.service.offer.payload.UpdateOfferReq;
-import com.muazwzxv.loanservice.service.offer.payload.UpdateOfferResp;
+import com.muazwzxv.loanservice.services.offer.IOfferService;
+import com.muazwzxv.loanservice.services.offer.payload.CreateLoanRequest;
+import com.muazwzxv.loanservice.services.offer.payload.CreateLoanResponse;
+import com.muazwzxv.loanservice.services.offer.payload.UpdateOfferReq;
+import com.muazwzxv.loanservice.services.offer.payload.UpdateOfferResp;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
