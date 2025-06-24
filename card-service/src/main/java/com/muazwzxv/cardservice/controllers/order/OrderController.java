@@ -13,17 +13,17 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 public class OrderController {
 
-    @PostMapping("/v1/order")
+    @PostMapping("/v1/card-order")
     public ResponseEntity<Object> submitOrder() {
         return null;
     }
 
-    @GetMapping("/v1/order/{customerUUID}")
+    @GetMapping("/v1/card-order/{customerUUID}")
     public ResponseEntity<Object> getCardOrder() {
         return null;
     }
 
-    @PostMapping("/v1/simulate-order/complete")
+    @PostMapping("/v1/simulate-card-order/complete")
     public ResponseEntity<Object> simulateOrderCompleted() {
         return null;
     }
