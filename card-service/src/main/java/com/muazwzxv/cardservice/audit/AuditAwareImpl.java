@@ -1,4 +1,4 @@
-package com.muazwzxv.loanservice.audit;
+package com.muazwzxv.cardservice.audit;
 
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.stereotype.Component;
@@ -9,6 +9,6 @@ import java.util.Optional;
 public class AuditAwareImpl implements AuditorAware<String> {
     @Override
     public Optional<String> getCurrentAuditor() {
-        return Optional.of("loan_service");
+        return Optional.of("card_service");
     }
 }
