@@ -19,6 +19,9 @@ public class DesignEntity extends BaseEntity{
     @Column(name = "design_uuid")
     private String designUUId;
 
+    @Column(name = "design_code")
+    private String designCode;
+
     @Column(name = "name")
     private String name;
 

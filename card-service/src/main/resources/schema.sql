@@ -15,6 +15,7 @@ CREATE TABLE IF NOT EXISTS `design` (
     `id` int AUTO_INCREMENT PRIMARY KEY,
 
     `design_uuid` varchar(36),
+    `design_code` varchar(36)
     `name` varchar(50),
     `description` varchar(100),
     `status` varchar(30),

@@ -32,15 +32,16 @@ public class DesignController {
         return ResponseEntity.ok(resp.getDesign());
     }
 
-    @PutMapping("/v1/design")
-    public ResponseEntity<Object> updateDesign() {
-        return null;
-    }
-
     @GetMapping("/v1/design/{designUUID}")
-    public ResponseEntity<Object> getDesign(
+    public ResponseEntity<DesignDto> getDesign(
         @PathVariable @NotEmpty(message = "uuid cannot be empty") String designUUID
     ) {
+        DesignDto design = this.designService.getDesignByDesignUUID(designUUID);
+        return ResponseEntity.ok(design);
+    }
+
+    @PutMapping("/v1/design")
+    public ResponseEntity<Object> updateDesign() {
         return null;
     }
 }

@@ -8,5 +8,5 @@ import com.muazwzxv.cardservice.services.design.payload.UpdateDesignRequest;
 public interface IDesignService {
     CreateDesignResponse createDesign(CreateDesignRequest req);
     DesignDto updateDesign(UpdateDesignRequest req);
-    DesignDto getDesignByCardUUID(String designUUID);
+    DesignDto getDesignByDesignUUID(String designUUID);
 }

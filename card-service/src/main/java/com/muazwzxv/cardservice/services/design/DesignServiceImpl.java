@@ -2,6 +2,7 @@ package com.muazwzxv.cardservice.services.design;
 
 import com.muazwzxv.cardservice.dto.DesignDto;
 import com.muazwzxv.cardservice.entities.DesignEntity;
+import com.muazwzxv.cardservice.exceptions.ResourceNotFoundException;
 import com.muazwzxv.cardservice.exceptions.UnexpectedErrorException;
 import com.muazwzxv.cardservice.mapper.DesignMapper;
 import com.muazwzxv.cardservice.repositories.DesignRepository;
@@ -47,7 +48,10 @@ public class DesignServiceImpl implements IDesignService{
     }
 
     @Override
-    public DesignDto getDesignByCardUUID(String designUUID) {
-        return null;
+    public DesignDto getDesignByDesignUUID(String designUUID) {
+        DesignEntity designEntity = this.designRepository.findByDesignUUID(designUUID).orElseThrow(
+            () -> new ResourceNotFoundException("Design", "designUUID", designUUID)
+        );
+        return this.designMapper.toDto(designEntity);
     }
 }
