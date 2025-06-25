@@ -1,6 +1,9 @@
 package com.muazwzxv.cardservice.services.design;
 
 import com.muazwzxv.cardservice.dto.DesignDto;
+import com.muazwzxv.cardservice.entities.DesignEntity;
+import com.muazwzxv.cardservice.exceptions.UnexpectedErrorException;
+import com.muazwzxv.cardservice.mapper.DesignMapper;
 import com.muazwzxv.cardservice.repositories.DesignRepository;
 import com.muazwzxv.cardservice.services.design.payload.CreateDesignRequest;
 import com.muazwzxv.cardservice.services.design.payload.CreateDesignResponse;
@@ -9,15 +12,33 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Slf4j
 @Service
 @AllArgsConstructor
 public class DesignServiceImpl implements IDesignService{
     private DesignRepository designRepository;
+    private DesignMapper designMapper;
 
     @Override
     public CreateDesignResponse createDesign(CreateDesignRequest req) {
-        return null;
+        try {
+            DesignEntity designEntity = DesignEntity.builder()
+                .designUUId(UUID.randomUUID().toString())
+                .name(req.getName())
+                .description(req.getDescription())
+                .status("ACTIVE")
+                .build();
+
+            this.designRepository.saveAndFlush(designEntity);
+            return CreateDesignResponse.builder()
+                .design(designMapper.toDto(designEntity)) // TODO: assign the value
+                .build();
+        } catch (Exception ex) {
+            log.error("unexpected error when creating design", ex);
+            throw new UnexpectedErrorException("UNEXPECTED_ERROR", ex);
+        }
     }
 
     @Override

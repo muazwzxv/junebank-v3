@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 @Builder
 public class DesignDto {
     private String designUUId;
+    private String name;
     private String description;
     private String status;
 

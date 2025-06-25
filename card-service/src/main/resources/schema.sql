@@ -2,8 +2,8 @@ CREATE TABLE IF NOT EXISTS `order` (
     `id` int AUTO_INCREMENT PRIMARY KEY,
 
     `customer_uuid` varchar(36),
-    `design_uuid` varchar,
-    `status` varchar,
+    `design_uuid` varchar(36),
+    `status` varchar(30),
 
     `created_at` date NOT NULL,
     `created_by` varchar(20) NOT NULL,
@@ -15,7 +15,8 @@ CREATE TABLE IF NOT EXISTS `design` (
     `id` int AUTO_INCREMENT PRIMARY KEY,
 
     `design_uuid` varchar(36),
-    `description` varchar,
+    `name` varchar(50),
+    `description` varchar(100),
     `status` varchar(30),
 
     `created_at` date NOT NULL,
@@ -29,7 +30,7 @@ CREATE TABLE IF NOT EXISTS `transaction` (
 
     `transaction_uuid` varchar(36),
     `card_uuid` varchar(36),
-    `type` varchar, -- charge, refund
+    `type` varchar(30), -- charge, refund
     `status` varchar(30),
 
     `created_at` date NOT NULL,
@@ -43,7 +44,7 @@ CREATE TABLE IF NOT EXISTS `card` (
 
     `card_uuid` varchar(36),
     `customer_uuid` varchar(36),
-    `status` varchar,
+    `status` varchar(30),
 
     `created_at` date NOT NULL,
     `created_by` varchar(20) NOT NULL,

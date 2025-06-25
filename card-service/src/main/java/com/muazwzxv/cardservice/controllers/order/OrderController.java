@@ -1,12 +1,12 @@
 package com.muazwzxv.cardservice.controllers.order;
 
+import com.muazwzxv.cardservice.controllers.order.Http.SubmitOrderReqHttp;
+import com.muazwzxv.cardservice.controllers.order.Http.SubmitOrderRespHttp;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path = "/api", produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class OrderController {
 
     @PostMapping("/v1/card-order")
-    public ResponseEntity<Object> submitOrder() {
+    public ResponseEntity<SubmitOrderRespHttp> submitOrder(
+        @Valid @RequestBody SubmitOrderReqHttp req
+    ) {
         return null;
     }
 

@@ -6,4 +6,6 @@ import lombok.Data;
 @Data
 @Builder
 public class CreateDesignRequest {
+    private String name;
+    private String description;
 }
