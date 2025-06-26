@@ -10,7 +10,7 @@ public class DesignMapper {
         if (design == null) return null;
 
         return DesignDto.builder()
-            .designUUId(design.getDesignUUId())
+            .designUUId(design.getDesignUUID())
             .name(design.getName())
             .description(design.getDescription())
             .status(design.getStatus())
@@ -25,7 +25,7 @@ public class DesignMapper {
         if (dto == null) return null;
 
         DesignEntity design = DesignEntity.builder()
-            .designUUId(dto.getDesignUUId())
+            .designUUID(dto.getDesignUUId())
             .name(dto.getName())
             .description(dto.getDescription())
             .status(dto.getStatus())

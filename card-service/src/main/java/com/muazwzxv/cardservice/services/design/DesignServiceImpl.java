@@ -26,7 +26,7 @@ public class DesignServiceImpl implements IDesignService{
     public CreateDesignResponse createDesign(CreateDesignRequest req) {
         try {
             DesignEntity designEntity = DesignEntity.builder()
-                .designUUId(UUID.randomUUID().toString())
+                .designUUID(UUID.randomUUID().toString())
                 .name(req.getName())
                 .description(req.getDescription())
                 .status("ACTIVE")

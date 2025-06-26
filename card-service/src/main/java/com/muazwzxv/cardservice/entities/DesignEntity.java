@@ -4,8 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Getter
 @Builder
+@Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,7 +17,7 @@ public class DesignEntity extends BaseEntity{
     private Long id;
 
     @Column(name = "design_uuid")
-    private String designUUId;
+    private String designUUID;
 
     @Column(name = "design_code")
     private String designCode;
