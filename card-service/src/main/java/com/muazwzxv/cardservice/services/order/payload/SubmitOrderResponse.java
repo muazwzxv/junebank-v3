@@ -6,4 +6,5 @@ import lombok.Data;
 @Data
 @Builder
 public class SubmitOrderResponse {
+    private String orderUUID;
 }

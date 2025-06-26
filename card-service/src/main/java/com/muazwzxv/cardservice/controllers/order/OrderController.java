@@ -2,6 +2,9 @@ package com.muazwzxv.cardservice.controllers.order;
 
 import com.muazwzxv.cardservice.controllers.order.Http.SubmitOrderReqHttp;
 import com.muazwzxv.cardservice.controllers.order.Http.SubmitOrderRespHttp;
+import com.muazwzxv.cardservice.services.order.IOrderService;
+import com.muazwzxv.cardservice.services.order.payload.SubmitOrderRequest;
+import com.muazwzxv.cardservice.services.order.payload.SubmitOrderResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
@@ -13,11 +16,23 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 public class OrderController {
 
+    private IOrderService orderService;
+
     @PostMapping("/v1/card-order")
     public ResponseEntity<SubmitOrderRespHttp> submitOrder(
         @Valid @RequestBody SubmitOrderReqHttp req
     ) {
-        return null;
+        SubmitOrderRequest arg = SubmitOrderRequest.builder()
+            .customerUUID(req.getCustomerUUID())
+            .designUUID(req.getDesignUUID())
+            .build();
+
+        SubmitOrderResponse resp = this.orderService.submitOrder(arg);
+        return ResponseEntity.ok(
+            SubmitOrderRespHttp.builder()
+                .orderUUID(resp.getOrderUUID())
+                .build()
+        );
     }
 
     @GetMapping("/v1/card-order/{customerUUID}")
