@@ -1,6 +1,7 @@
 CREATE TABLE IF NOT EXISTS `order` (
     `id` int AUTO_INCREMENT PRIMARY KEY,
 
+    `order_uuid` varchar(36),
     `customer_uuid` varchar(36),
     `design_uuid` varchar(36),
     `status` varchar(30),
