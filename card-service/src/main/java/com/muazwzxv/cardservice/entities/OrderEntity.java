@@ -16,11 +16,14 @@ public class OrderEntity extends BaseEntity {
     @Column(name = "id")
     private Long id;
 
+    @Column(name = "order_uuid")
+    private String orderUUID;
+
     @Column(name = "customer_uuid")
     private String customerUUID;
 
     @Column(name = "design_uuid")
-    private String design_uuid;
+    private String designUUID;
 
     @Column(name = "status")
     private String status;

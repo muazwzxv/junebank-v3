@@ -4,6 +4,7 @@ import com.muazwzxv.cardservice.dto.OrderDto;
 import com.muazwzxv.cardservice.entities.DesignEntity;
 import com.muazwzxv.cardservice.entities.OrderEntity;
 import com.muazwzxv.cardservice.exceptions.ResourceNotFoundException;
+import com.muazwzxv.cardservice.exceptions.ordersException.OrderInProgressException;
 import com.muazwzxv.cardservice.repositories.DesignRepository;
 import com.muazwzxv.cardservice.repositories.OrderRepository;
 import com.muazwzxv.cardservice.services.order.payload.SimulateOrderCompleteRequest;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 @Service
 @Slf4j
@@ -27,6 +29,7 @@ public class OrderServiceImpl implements IOrderService{
     @Override
     public SubmitOrderResponse submitOrder(SubmitOrderRequest req) {
         // TODO: verify customer exist
+        // - API call to another service
 
         // verify design exist
         DesignEntity designEntity = this.designRepository.findByDesignUUID(req.getDesignUUID()).orElseThrow(
@@ -38,14 +41,23 @@ public class OrderServiceImpl implements IOrderService{
         if (!orderList.isEmpty()) {
             log.info("customer has previous orders, customerUUID: {}", req.getCustomerUUID());
             for (OrderEntity orderEntity : orderList) {
-                if (Objects.equals(orderEntity.getStatus(), "COMPLETED")) {
-
+                if (!Objects.equals(orderEntity.getStatus(), "COMPLETED")) {
+                    throw new OrderInProgressException(req.getCustomerUUID());
                 }
             }
         }
 
+        OrderEntity orderEntity = OrderEntity.builder()
+            .orderUUID(UUID.randomUUID().toString())
+            .customerUUID(req.getCustomerUUID())
+            .designUUID(designEntity.getDesignUUID())
+            .status("SUBMITTED")
+            .build();
+        this.orderRepository.save(orderEntity);
 
-        return null;
+        return SubmitOrderResponse.builder()
+            .orderUUID(orderEntity.getOrderUUID())
+            .build();
     }
 
     @Override
