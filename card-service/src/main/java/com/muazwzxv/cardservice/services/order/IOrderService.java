@@ -8,6 +8,6 @@ import com.muazwzxv.cardservice.services.order.payload.SubmitOrderResponse;
 
 public interface IOrderService {
     SubmitOrderResponse submitOrder(SubmitOrderRequest submitOrderRequest);
-    OrderDto getOrderByCustomerUUID(String customerUUID);
+    OrderDto getOrderByOrderUUID(String orderUUID);
     SimulateOrderCompleteResponse simulateOrderComplete(SimulateOrderCompleteRequest simulateOrderCompleteRequest);
 }

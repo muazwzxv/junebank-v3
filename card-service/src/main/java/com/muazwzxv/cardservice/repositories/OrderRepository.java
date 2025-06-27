@@ -15,5 +15,8 @@ public interface OrderRepository extends JpaRepository<OrderEntity, Long> {
     Optional<OrderEntity> findByCustomerUUID(String customerUUID);
 
     @Transactional
+    Optional<OrderEntity> findByOrderUUID(String orderUUID);
+
+    @Transactional
     List<OrderEntity> findAllByCustomerUUID(String customerUUID);
 }

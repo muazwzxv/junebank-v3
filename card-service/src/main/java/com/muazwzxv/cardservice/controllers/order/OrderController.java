@@ -2,10 +2,12 @@ package com.muazwzxv.cardservice.controllers.order;
 
 import com.muazwzxv.cardservice.controllers.order.Http.SubmitOrderReqHttp;
 import com.muazwzxv.cardservice.controllers.order.Http.SubmitOrderRespHttp;
+import com.muazwzxv.cardservice.dto.OrderDto;
 import com.muazwzxv.cardservice.services.order.IOrderService;
 import com.muazwzxv.cardservice.services.order.payload.SubmitOrderRequest;
 import com.muazwzxv.cardservice.services.order.payload.SubmitOrderResponse;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -35,9 +37,13 @@ public class OrderController {
         );
     }
 
-    @GetMapping("/v1/card-order/{customerUUID}")
-    public ResponseEntity<Object> getCardOrder() {
-        return null;
+    @GetMapping("/v1/card-order/{orderUUID}")
+    public ResponseEntity<OrderDto> getCardOrder(
+        @Valid @PathVariable @NotEmpty(message = "uuid cannot be empty") String orderUUID
+    ) {
+        return ResponseEntity.ok(
+            this.orderService.getOrderByOrderUUID(orderUUID)
+        );
     }
 
     @PostMapping("/v1/simulate-card-order/complete")

@@ -5,6 +5,7 @@ import com.muazwzxv.cardservice.entities.DesignEntity;
 import com.muazwzxv.cardservice.entities.OrderEntity;
 import com.muazwzxv.cardservice.exceptions.ResourceNotFoundException;
 import com.muazwzxv.cardservice.exceptions.ordersException.OrderInProgressException;
+import com.muazwzxv.cardservice.mapper.OrderMapper;
 import com.muazwzxv.cardservice.repositories.DesignRepository;
 import com.muazwzxv.cardservice.repositories.OrderRepository;
 import com.muazwzxv.cardservice.services.order.payload.SimulateOrderCompleteRequest;
@@ -25,6 +26,8 @@ import java.util.UUID;
 public class OrderServiceImpl implements IOrderService{
     private OrderRepository orderRepository;
     private DesignRepository designRepository;
+
+    private OrderMapper orderMapper;
 
     @Override
     public SubmitOrderResponse submitOrder(SubmitOrderRequest req) {
@@ -61,8 +64,11 @@ public class OrderServiceImpl implements IOrderService{
     }
 
     @Override
-    public OrderDto getOrderByCustomerUUID(String customerUUID) {
-        return null;
+    public OrderDto getOrderByOrderUUID(String orderUUID) {
+        OrderEntity orderEntity = this.orderRepository.findByOrderUUID(orderUUID).orElseThrow(
+            () -> new ResourceNotFoundException("Order", "orderUUID", orderUUID)
+        );
+        return this.orderMapper.toDto(orderEntity);
     }
 
     @Override
