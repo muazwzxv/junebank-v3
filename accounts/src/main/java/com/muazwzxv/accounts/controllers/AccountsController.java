@@ -8,7 +8,8 @@ import com.muazwzxv.accounts.dto.customerDTO.CustomerDto;
 import com.muazwzxv.accounts.service.IAccountService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -17,11 +18,18 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path = "/api", produces = {MediaType.APPLICATION_JSON_VALUE})
-@AllArgsConstructor
 @Validated
 public class AccountsController {
 
-    private IAccountService accountService;
+    private final IAccountService accountService;
+
+    @Autowired
+    public AccountsController(IAccountService accountService) {
+        this.accountService = accountService;
+    }
+
+    @Value("${build.version}")
+    private String buildVersion;
 
     @PostMapping("/v1/create")
     public ResponseEntity<ResponseDto> createAccount(@Valid @RequestBody CreateCustomerDto customerDto) {
@@ -68,5 +76,10 @@ public class AccountsController {
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).
                 body(null);
+    }
+
+    @GetMapping("/v1/build-info")
+    public ResponseEntity<String> getBuild() {
+        return ResponseEntity.status(HttpStatus.OK).body(this.buildVersion);
     }
 }
