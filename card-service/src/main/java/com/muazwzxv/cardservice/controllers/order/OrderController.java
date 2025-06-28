@@ -1,9 +1,13 @@
 package com.muazwzxv.cardservice.controllers.order;
 
+import com.muazwzxv.cardservice.controllers.order.Http.SimulateOrderCompleteReqHttp;
+import com.muazwzxv.cardservice.controllers.order.Http.SimulateOrderCompleteRespHttp;
 import com.muazwzxv.cardservice.controllers.order.Http.SubmitOrderReqHttp;
 import com.muazwzxv.cardservice.controllers.order.Http.SubmitOrderRespHttp;
 import com.muazwzxv.cardservice.dto.OrderDto;
 import com.muazwzxv.cardservice.services.order.IOrderService;
+import com.muazwzxv.cardservice.services.order.payload.SimulateOrderCompleteRequest;
+import com.muazwzxv.cardservice.services.order.payload.SimulateOrderCompleteResponse;
 import com.muazwzxv.cardservice.services.order.payload.SubmitOrderRequest;
 import com.muazwzxv.cardservice.services.order.payload.SubmitOrderResponse;
 import jakarta.validation.Valid;
@@ -47,7 +51,13 @@ public class OrderController {
     }
 
     @PostMapping("/v1/simulate-card-order/complete")
-    public ResponseEntity<Object> simulateOrderCompleted() {
-        return null;
+    public ResponseEntity<SimulateOrderCompleteRespHttp> simulateOrderCompleted(
+        @Valid @RequestBody SimulateOrderCompleteReqHttp req
+    ) {
+        SimulateOrderCompleteRequest arg = SimulateOrderCompleteRequest.builder()
+            .build();
+        SimulateOrderCompleteResponse resp = this.orderService.simulateOrderComplete(arg);
+        return ResponseEntity.ok(SimulateOrderCompleteRespHttp.builder()
+            .build());
     }
 }

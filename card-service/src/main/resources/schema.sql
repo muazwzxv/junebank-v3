@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS `order` (
+CREATE TABLE IF NOT EXISTS `card_order` (
     `id` int AUTO_INCREMENT PRIMARY KEY,
 
     `order_uuid` varchar(36),
