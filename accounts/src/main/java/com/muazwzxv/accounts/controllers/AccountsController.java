@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +31,9 @@ public class AccountsController {
 
     @Value("${build.version}")
     private String buildVersion;
+
+    @Autowired
+    private Environment env;
 
     @PostMapping("/v1/create")
     public ResponseEntity<ResponseDto> createAccount(@Valid @RequestBody CreateCustomerDto customerDto) {
@@ -81,5 +85,10 @@ public class AccountsController {
     @GetMapping("/v1/build-info")
     public ResponseEntity<String> getBuild() {
         return ResponseEntity.status(HttpStatus.OK).body(this.buildVersion);
+    }
+
+    @GetMapping("/v1/java-version")
+    public ResponseEntity<String> getEnv() {
+        return ResponseEntity.status(HttpStatus.OK).body(this.env.getProperty("JAVA_HOME"));
     }
 }

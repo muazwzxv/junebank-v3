@@ -19,3 +19,12 @@ spring:
 
 build:
   version: "1.0"
+
+accounts:
+  message: ""
+  contactDetails:
+    name: ""
+    email: ""
+  oncallSupport:
+  - 000-0000000
+  - 111-0000000
