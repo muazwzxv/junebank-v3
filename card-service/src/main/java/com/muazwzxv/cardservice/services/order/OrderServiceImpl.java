@@ -83,29 +83,14 @@ public class OrderServiceImpl implements IOrderService{
     public SimulateOrderCompleteResponse simulateOrderComplete(
         SimulateOrderCompleteRequest req
     ) {
-
         // verify order exist
-        OrderEntity order = this.orderRepository.findByOrderUUID(req.getOrderUUID()).orElseThrow(
-            () ->  new ResourceNotFoundException("Order", "orderUUID", req.getOrderUUID())
-        );
-
-        // verify order in valid status
-        Set<String> validStatuses = Set.of("SUBMITTED");
-        if (!validStatuses.contains(order.getStatus())) {
-            throw new OrderInvalidStateException(order.getOrderUUID(), order.getStatus());
-        }
+        OrderEntity order = validateOrderForCompletion(req.getOrderUUID());
 
         try {
-            CardEntity cardEntity = CardEntity.builder()
-                .cardUUID(UUID.randomUUID().toString())
-                .customerUUID(order.getCustomerUUID())
-                .status("ACTIVATED")
-                .build();
+            CardEntity cardEntity = this.createActivatedCard(order.getCustomerUUID());
 
-            // create card entry
-            this.cardRepository.save(cardEntity);
-
-            order.setStatus("COMPLETED");
+            // complete order
+            order.setStatus("COMPLETED"); // TODO: using enum
             this.orderRepository.saveAndFlush(order);
 
             return SimulateOrderCompleteResponse.builder()
@@ -114,8 +99,32 @@ public class OrderServiceImpl implements IOrderService{
                 .order(this.orderMapper.toDto(order))
                 .build();
         } catch(Exception ex) {
-            log.error("unexpected erorr simulating card order: {}", ex.getMessage());
+            log.error("unexpected error simulating card order: {}, error: {}", req.getOrderUUID(), ex.getMessage());
             throw new UnexpectedErrorException(ex.getMessage(), ex);
         }
+    }
+
+    private CardEntity createActivatedCard(String customerUUID) {
+        CardEntity cardEntity = CardEntity.builder()
+            .cardUUID(UUID.randomUUID().toString())
+            .customerUUID(customerUUID)
+            .status("ACTIVATE") // TODO: using enum
+            .build();
+
+        return cardRepository.save(cardEntity);
+    }
+
+    private OrderEntity validateOrderForCompletion(String orderUUID) {
+        // Find order
+        OrderEntity order = orderRepository.findByOrderUUID(orderUUID)
+            .orElseThrow(() -> new ResourceNotFoundException("Order", "orderUUID", orderUUID));
+
+        // Validate status - consider using enum instead of string literals
+        Set<String> validStatuses = Set.of("SUBMITTED"); // TODO: using enum
+        if (!validStatuses.contains(order.getStatus())) {
+            throw new OrderInvalidStateException(order.getOrderUUID(), order.getStatus());
+        }
+
+        return order;
     }
 }
