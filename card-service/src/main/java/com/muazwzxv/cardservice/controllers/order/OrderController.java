@@ -55,9 +55,13 @@ public class OrderController {
         @Valid @RequestBody SimulateOrderCompleteReqHttp req
     ) {
         SimulateOrderCompleteRequest arg = SimulateOrderCompleteRequest.builder()
+            .orderUUID(req.getOrderUUID())
             .build();
         SimulateOrderCompleteResponse resp = this.orderService.simulateOrderComplete(arg);
         return ResponseEntity.ok(SimulateOrderCompleteRespHttp.builder()
+            .cardUUID(resp.getCardUUID())
+            .status(resp.getStatus())
+            .order(resp.getOrder())
             .build());
     }
 }

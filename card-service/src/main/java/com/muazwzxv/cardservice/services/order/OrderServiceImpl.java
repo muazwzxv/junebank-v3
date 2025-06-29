@@ -1,23 +1,29 @@
 package com.muazwzxv.cardservice.services.order;
 
 import com.muazwzxv.cardservice.dto.OrderDto;
+import com.muazwzxv.cardservice.entities.CardEntity;
 import com.muazwzxv.cardservice.entities.DesignEntity;
 import com.muazwzxv.cardservice.entities.OrderEntity;
 import com.muazwzxv.cardservice.exceptions.ResourceNotFoundException;
+import com.muazwzxv.cardservice.exceptions.UnexpectedErrorException;
 import com.muazwzxv.cardservice.exceptions.ordersException.OrderInProgressException;
+import com.muazwzxv.cardservice.exceptions.ordersException.OrderInvalidStateException;
 import com.muazwzxv.cardservice.mapper.OrderMapper;
+import com.muazwzxv.cardservice.repositories.CardRepository;
 import com.muazwzxv.cardservice.repositories.DesignRepository;
 import com.muazwzxv.cardservice.repositories.OrderRepository;
 import com.muazwzxv.cardservice.services.order.payload.SimulateOrderCompleteRequest;
 import com.muazwzxv.cardservice.services.order.payload.SimulateOrderCompleteResponse;
 import com.muazwzxv.cardservice.services.order.payload.SubmitOrderRequest;
 import com.muazwzxv.cardservice.services.order.payload.SubmitOrderResponse;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -26,6 +32,7 @@ import java.util.UUID;
 public class OrderServiceImpl implements IOrderService{
     private OrderRepository orderRepository;
     private DesignRepository designRepository;
+    private CardRepository cardRepository;
 
     private OrderMapper orderMapper;
 
@@ -72,9 +79,43 @@ public class OrderServiceImpl implements IOrderService{
     }
 
     @Override
+    @Transactional
     public SimulateOrderCompleteResponse simulateOrderComplete(
-        SimulateOrderCompleteRequest simulateOrderCompleteRequest
+        SimulateOrderCompleteRequest req
     ) {
-        return null;
+
+        // verify order exist
+        OrderEntity order = this.orderRepository.findByOrderUUID(req.getOrderUUID()).orElseThrow(
+            () ->  new ResourceNotFoundException("Order", "orderUUID", req.getOrderUUID())
+        );
+
+        // verify order in valid status
+        Set<String> validStatuses = Set.of("SUBMITTED");
+        if (!validStatuses.contains(order.getStatus())) {
+            throw new OrderInvalidStateException(order.getOrderUUID(), order.getStatus());
+        }
+
+        try {
+            CardEntity cardEntity = CardEntity.builder()
+                .cardUUID(UUID.randomUUID().toString())
+                .customerUUID(order.getCustomerUUID())
+                .status("ACTIVATED")
+                .build();
+
+            // create card entry
+            this.cardRepository.save(cardEntity);
+
+            order.setStatus("COMPLETED");
+            this.orderRepository.saveAndFlush(order);
+
+            return SimulateOrderCompleteResponse.builder()
+                .cardUUID(cardEntity.getCardUUID())
+                .status(cardEntity.getStatus())
+                .order(this.orderMapper.toDto(order))
+                .build();
+        } catch(Exception ex) {
+            log.error("unexpected erorr simulating card order: {}", ex.getMessage());
+            throw new UnexpectedErrorException(ex.getMessage(), ex);
+        }
     }
 }
