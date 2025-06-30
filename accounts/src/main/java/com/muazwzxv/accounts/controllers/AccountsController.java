@@ -1,5 +1,6 @@
 package com.muazwzxv.accounts.controllers;
 
+import com.muazwzxv.accounts.configs.AccountsContactInfoConfig;
 import com.muazwzxv.accounts.constants.AccountsConstants;
 import com.muazwzxv.accounts.dto.ResponseDto;
 import com.muazwzxv.accounts.dto.accountDTO.UpdateAccountDto;
@@ -34,6 +35,9 @@ public class AccountsController {
 
     @Autowired
     private Environment env;
+
+    @Autowired
+    private AccountsContactInfoConfig contactInfoConfig;
 
     @PostMapping("/v1/create")
     public ResponseEntity<ResponseDto> createAccount(@Valid @RequestBody CreateCustomerDto customerDto) {

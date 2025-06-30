@@ -1,5 +1,6 @@
 server:
   port: 8080
+
 spring:
   application:
     name: accounts
@@ -16,6 +17,13 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+  config:
+    import:
+      - "application_qa.yml"
+      - "application_prd.yml"
+  profiles:
+    active:
+      - "qa"
 
 build:
   version: "1.0"

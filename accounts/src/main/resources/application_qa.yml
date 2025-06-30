@@ -1,0 +1,16 @@
+spring:
+  config:
+    activate:
+      on-profile: "qa"
+
+build:
+  version: "1.0"
+
+accounts:
+  message: ""
+  contactDetails:
+    name: ""
+    email: ""
+  onCallSupport:
+    - 000-0000000
+    - 111-0000000
