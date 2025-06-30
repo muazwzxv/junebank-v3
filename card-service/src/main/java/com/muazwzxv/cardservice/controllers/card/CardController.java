@@ -43,13 +43,15 @@ public class CardController {
     public ResponseEntity<CardDto> activateCard(
         @Valid @RequestBody ActivateCardReqHttp req
     ) {
-        return ResponseEntity.ok(null);
+        CardDto cardDto = this.cardService.activateCard(req.getCardUUID());
+        return ResponseEntity.ok(cardDto);
     }
 
     @PostMapping("/v1/card/disable")
     public ResponseEntity<CardDto> disableCard(
         @Valid @RequestBody DisableCardReqHttp req
     ) {
-        return ResponseEntity.ok(null);
+        CardDto cardDto = this.cardService.disableCard(req.getCardUUID());
+        return ResponseEntity.ok(cardDto);
     }
 }
