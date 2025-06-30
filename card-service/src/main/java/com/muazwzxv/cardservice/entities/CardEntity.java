@@ -22,6 +22,9 @@ public class CardEntity extends BaseEntity {
     @Column(name = "customer_uuid")
     private String customerUUID;
 
+    @Column(name = "design_uuid")
+    private String designUUID;
+
     @Column(name = "status")
     private String status;
 }

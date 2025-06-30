@@ -46,6 +46,7 @@ CREATE TABLE IF NOT EXISTS `card` (
 
     `card_uuid` varchar(36),
     `customer_uuid` varchar(36),
+    `design_uuid` varchar(36),
     `status` varchar(30),
 
     `created_at` date NOT NULL,

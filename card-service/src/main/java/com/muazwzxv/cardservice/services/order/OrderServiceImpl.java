@@ -4,6 +4,8 @@ import com.muazwzxv.cardservice.dto.OrderDto;
 import com.muazwzxv.cardservice.entities.CardEntity;
 import com.muazwzxv.cardservice.entities.DesignEntity;
 import com.muazwzxv.cardservice.entities.OrderEntity;
+import com.muazwzxv.cardservice.enums.card.CardStatus;
+import com.muazwzxv.cardservice.enums.order.OrderStatus;
 import com.muazwzxv.cardservice.exceptions.ResourceNotFoundException;
 import com.muazwzxv.cardservice.exceptions.UnexpectedErrorException;
 import com.muazwzxv.cardservice.exceptions.ordersException.OrderInProgressException;
@@ -51,7 +53,7 @@ public class OrderServiceImpl implements IOrderService{
         if (!orderList.isEmpty()) {
             log.info("customer has previous orders, customerUUID: {}", req.getCustomerUUID());
             for (OrderEntity orderEntity : orderList) {
-                if (!Objects.equals(orderEntity.getStatus(), "COMPLETED")) {
+                if (!Objects.equals(orderEntity.getStatus(), OrderStatus.ORDER_COMPLETED.getValue())) {
                     throw new OrderInProgressException(req.getCustomerUUID());
                 }
             }
@@ -61,7 +63,7 @@ public class OrderServiceImpl implements IOrderService{
             .orderUUID(UUID.randomUUID().toString())
             .customerUUID(req.getCustomerUUID())
             .designUUID(designEntity.getDesignUUID())
-            .status("SUBMITTED")
+            .status(OrderStatus.ORDER_SUBMITTED.getValue())
             .build();
         this.orderRepository.save(orderEntity);
 
@@ -87,10 +89,10 @@ public class OrderServiceImpl implements IOrderService{
         OrderEntity order = validateOrderForCompletion(req.getOrderUUID());
 
         try {
-            CardEntity cardEntity = this.createActivatedCard(order.getCustomerUUID());
+            CardEntity cardEntity = this.createActivatedCard(this.orderMapper.toDto(order));
 
             // complete order
-            order.setStatus("COMPLETED"); // TODO: using enum
+            order.setStatus(OrderStatus.ORDER_COMPLETED.getValue());
             this.orderRepository.saveAndFlush(order);
 
             return SimulateOrderCompleteResponse.builder()
@@ -104,11 +106,12 @@ public class OrderServiceImpl implements IOrderService{
         }
     }
 
-    private CardEntity createActivatedCard(String customerUUID) {
+    private CardEntity createActivatedCard(OrderDto order) {
         CardEntity cardEntity = CardEntity.builder()
             .cardUUID(UUID.randomUUID().toString())
-            .customerUUID(customerUUID)
-            .status("ACTIVATE") // TODO: using enum
+            .customerUUID(order.getCustomerUUID())
+            .designUUID(order.getDesignUUID())
+            .status(CardStatus.CARD_ISSUED.getValue())
             .build();
 
         return cardRepository.save(cardEntity);
@@ -120,7 +123,7 @@ public class OrderServiceImpl implements IOrderService{
             .orElseThrow(() -> new ResourceNotFoundException("Order", "orderUUID", orderUUID));
 
         // Validate status - consider using enum instead of string literals
-        Set<String> validStatuses = Set.of("SUBMITTED"); // TODO: using enum
+        Set<String> validStatuses = Set.of(OrderStatus.ORDER_SUBMITTED.getValue());
         if (!validStatuses.contains(order.getStatus())) {
             throw new OrderInvalidStateException(order.getOrderUUID(), order.getStatus());
         }

@@ -2,6 +2,7 @@ package com.muazwzxv.cardservice.services.design;
 
 import com.muazwzxv.cardservice.dto.DesignDto;
 import com.muazwzxv.cardservice.entities.DesignEntity;
+import com.muazwzxv.cardservice.enums.design.DesignStatus;
 import com.muazwzxv.cardservice.exceptions.ResourceNotFoundException;
 import com.muazwzxv.cardservice.exceptions.UnexpectedErrorException;
 import com.muazwzxv.cardservice.mapper.DesignMapper;
@@ -29,12 +30,12 @@ public class DesignServiceImpl implements IDesignService{
                 .designUUID(UUID.randomUUID().toString())
                 .name(req.getName())
                 .description(req.getDescription())
-                .status("ACTIVE")
+                .status(DesignStatus.DESIGN_ACTIVE.getValue())
                 .build();
 
             this.designRepository.saveAndFlush(designEntity);
             return CreateDesignResponse.builder()
-                .design(designMapper.toDto(designEntity)) // TODO: assign the value
+                .design(designMapper.toDto(designEntity))
                 .build();
         } catch (Exception ex) {
             log.error("unexpected error when creating design", ex);

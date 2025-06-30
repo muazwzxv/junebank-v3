@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 public class CardDto {
     private String cardUUID;
     private String customerUUID;
+    private String designUUID;
     private String status;
 
     private LocalDateTime createdAt;

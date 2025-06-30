@@ -1,5 +1,8 @@
 package com.muazwzxv.loanservice.enums.application;
 
+import lombok.Getter;
+
+@Getter
 public enum ApplicationStatus {
     PENDING_ACCEPTANCE("PENDING_ACCEPTANCE"),
     ACCEPTED("ACCEPTED"),
@@ -10,10 +13,6 @@ public enum ApplicationStatus {
 
     ApplicationStatus(String value) {
         this.value = value;
-    }
-
-    public String getValue() {
-        return value;
     }
 }
 
