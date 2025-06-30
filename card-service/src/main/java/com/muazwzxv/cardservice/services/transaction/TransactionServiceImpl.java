@@ -23,16 +23,15 @@ public class TransactionServiceImpl implements ITransactionService {
     private CardMapper cardMapper;
 
     @Override
-    public TransactionDto charge(TransactionRequest req) {
-        // verify card exist and valid
+    public TransactionDto triggerTransaction(TransactionRequest req) {
         CardDto cardDto = isCardEligibleForTransaction(req.getCardUUID());
-
-        return null;
-    }
-
-    @Override
-    public TransactionDto refund(TransactionRequest req) {
-        return null;
+        return switch (req.getTransactionType()) {
+            case "CHARGE" -> this.chargeCard(req, cardDto);
+            case "REFUND" -> this.refundCard(req, cardDto);
+            default ->
+                // TODO: throw exception here
+                null;
+        };
     }
 
     public CardDto isCardEligibleForTransaction(String cardUUID) {
@@ -46,4 +45,15 @@ public class TransactionServiceImpl implements ITransactionService {
         }
         return this.cardMapper.toDto(card);
     }
+
+    public TransactionDto chargeCard(TransactionRequest req, CardDto cardDto) {
+        // TODO: handle charge transaction
+        return null;
+    }
+
+    public TransactionDto refundCard(TransactionRequest req, CardDto cardDto) {
+        // TODO: handle refund transaction
+        return null;
+    }
+
 }

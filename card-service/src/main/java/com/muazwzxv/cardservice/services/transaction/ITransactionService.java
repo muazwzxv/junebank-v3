@@ -4,6 +4,5 @@ import com.muazwzxv.cardservice.dto.TransactionDto;
 import com.muazwzxv.cardservice.services.transaction.payload.TransactionRequest;
 
 public interface ITransactionService {
-    TransactionDto charge(TransactionRequest req);
-    TransactionDto refund(TransactionRequest req);
+    TransactionDto triggerTransaction(TransactionRequest req);
 }
