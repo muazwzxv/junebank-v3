@@ -1,6 +1,7 @@
 package com.muazwzxv.cardservice.controllers.card;
 
 import com.muazwzxv.cardservice.controllers.card.Http.ActivateCardReqHttp;
+import com.muazwzxv.cardservice.controllers.card.Http.DisableCardReqHttp;
 import com.muazwzxv.cardservice.controllers.card.Http.ListCardRespHttp;
 import com.muazwzxv.cardservice.dto.CardDto;
 import com.muazwzxv.cardservice.services.card.ICardService;
@@ -46,7 +47,9 @@ public class CardController {
     }
 
     @PostMapping("/v1/card/disable")
-    public ResponseEntity<Object> disableCard() {
-        return null;
+    public ResponseEntity<CardDto> disableCard(
+        @Valid @RequestBody DisableCardReqHttp req
+    ) {
+        return ResponseEntity.ok(null);
     }
 }

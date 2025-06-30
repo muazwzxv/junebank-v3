@@ -2,9 +2,12 @@ package com.muazwzxv.cardservice.services.card;
 
 import com.muazwzxv.cardservice.dto.CardDto;
 import com.muazwzxv.cardservice.entities.CardEntity;
+import com.muazwzxv.cardservice.enums.card.CardStatus;
 import com.muazwzxv.cardservice.exceptions.ResourceNotFoundException;
+import com.muazwzxv.cardservice.exceptions.UnexpectedErrorException;
 import com.muazwzxv.cardservice.mapper.CardMapper;
 import com.muazwzxv.cardservice.repositories.CardRepository;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -20,13 +23,42 @@ public class CardServiceImpl implements ICardService{
     private CardMapper cardMapper;
 
     @Override
+    @Transactional
     public CardDto activateCard(String cardUUID) {
-        return null;
+        log.info("activating card: {}", cardUUID);
+
+        CardEntity cardEntity = this.cardRepository.findByCardUUID(cardUUID).orElseThrow(
+            () -> new ResourceNotFoundException("Card", "cardUUID", cardUUID)
+        );
+
+        try {
+            cardEntity.setStatus(CardStatus.CARD_ACTIVE.getValue());
+            this.cardRepository.saveAndFlush(cardEntity);
+
+            return this.cardMapper.toDto(cardEntity);
+        } catch (Exception ex) {
+            log.error("unexpected error activating card, error: {}", ex.getMessage());
+            throw new UnexpectedErrorException(ex.getMessage(), ex);
+        }
     }
 
     @Override
     public CardDto disableCard(String cardUUID) {
-        return null;
+        log.info("disabling card: {}", cardUUID);
+
+        CardEntity cardEntity = this.cardRepository.findByCardUUID(cardUUID).orElseThrow(
+            () -> new ResourceNotFoundException("Card", "cardUUID", cardUUID)
+        );
+
+        try {
+            cardEntity.setStatus(CardStatus.CARD_CANCELLED.getValue());
+            this.cardRepository.saveAndFlush(cardEntity);
+
+            return this.cardMapper.toDto(cardEntity);
+        } catch (Exception ex) {
+            log.error("unexpected error disabling card, error: {}", ex.getMessage());
+            throw new UnexpectedErrorException(ex.getMessage(), ex);
+        }
     }
 
     @Override
