@@ -3,6 +3,7 @@ package com.muazwzxv.cardservice.services.transaction;
 import com.muazwzxv.cardservice.dto.CardDto;
 import com.muazwzxv.cardservice.dto.TransactionDto;
 import com.muazwzxv.cardservice.entities.CardEntity;
+import com.muazwzxv.cardservice.entities.TransactionEntity;
 import com.muazwzxv.cardservice.enums.card.CardStatus;
 import com.muazwzxv.cardservice.exceptions.ResourceNotFoundException;
 import com.muazwzxv.cardservice.exceptions.cardsException.CardNotEligibleForTransaction;
@@ -14,6 +15,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
+import java.util.UUID;
 
 @Service
 @AllArgsConstructor
@@ -48,11 +50,30 @@ public class TransactionServiceImpl implements ITransactionService {
 
     public TransactionDto chargeCard(TransactionRequest req, CardDto cardDto) {
         // TODO: handle charge transaction
+        TransactionEntity transaction = TransactionEntity.builder()
+            .transactionUUID(UUID.randomUUID().toString())
+            .cardUUID(req.getCardUUID())
+            .type("CHARGE")
+            .status("PROCESSING")
+            .build();
+
         return null;
     }
 
     public TransactionDto refundCard(TransactionRequest req, CardDto cardDto) {
-        // TODO: handle refund transaction
+        // TODO: verify ongoing charge transaction exist
+
+        // create entry for refund
+        TransactionEntity refundTransactionEntity = TransactionEntity.builder()
+            .transactionUUID(req.getTransactionUUID())
+            .cardUUID(req.getCardUUID())
+            .type("REFUND")
+            .status("PROCESSING")
+            .build();
+
+        this.transactionRepository.saveAndFlush(refundTransactionEntity);
+
+        // TODO: create transaction mapper
         return null;
     }
 

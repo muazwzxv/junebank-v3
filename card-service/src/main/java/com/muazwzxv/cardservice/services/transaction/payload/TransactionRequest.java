@@ -9,4 +9,5 @@ public class TransactionRequest {
     private String cardUUID;
     private String transactionType;
     private String amount;
+    private String transactionUUID;
 }

@@ -31,7 +31,7 @@ public class TransactionController {
             .amount(req.getAmount())
             .build();
 
-        TransactionDto transaction = this.transactionService.charge(arg);
+        TransactionDto transaction = this.transactionService.triggerTransaction(arg);
         return ResponseEntity.ok(TransactionRespHttp.builder()
             .cardUUID(req.getCardUUID())
             .transaction(transaction)
@@ -48,7 +48,7 @@ public class TransactionController {
             .amount(req.getAmount())
             .build();
 
-        TransactionDto transaction = this.transactionService.charge(arg);
+        TransactionDto transaction = this.transactionService.triggerTransaction(arg);
         return ResponseEntity.ok(TransactionRespHttp.builder()
             .cardUUID(req.getCardUUID())
             .transaction(transaction)
