@@ -1,9 +1,10 @@
 package com.muazwzxv.cardservice.exceptions;
 
 import com.muazwzxv.cardservice.dto.ErrorDto;
+import com.muazwzxv.cardservice.exceptions.cardsException.CardNotEligibleForTransaction;
 import com.muazwzxv.cardservice.exceptions.ordersException.OrderInProgressException;
 import com.muazwzxv.cardservice.exceptions.ordersException.OrderInvalidStateException;
-import com.muazwzxv.cardservice.exceptions.cardsException.CardNotEligibleForTransaction;
+import com.muazwzxv.cardservice.exceptions.transactionsException.InvalidTransactionTypeException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpHeaders;
@@ -127,6 +128,18 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(CardNotEligibleForTransaction.class)
     public ResponseEntity<ErrorDto> handleCardNotEligibleForTransaction(BadInputException exception, WebRequest req) {
+        HttpStatus statusCode = HttpStatus.BAD_REQUEST;
+        ErrorDto errResponseDTO = ErrorDto.builder()
+            .apiPath(req.getDescription(false))
+            .errorCode(statusCode)
+            .errorMessage(exception.getMessage())
+            .errorTime(LocalDateTime.now())
+            .build();
+        return new ResponseEntity<>(errResponseDTO, statusCode);
+    }
+
+    @ExceptionHandler(InvalidTransactionTypeException .class)
+    public ResponseEntity<ErrorDto> handleInvalidTransactionType(BadInputException exception, WebRequest req) {
         HttpStatus statusCode = HttpStatus.BAD_REQUEST;
         ErrorDto errResponseDTO = ErrorDto.builder()
             .apiPath(req.getDescription(false))

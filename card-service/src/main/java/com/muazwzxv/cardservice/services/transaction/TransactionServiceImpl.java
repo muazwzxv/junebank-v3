@@ -7,22 +7,27 @@ import com.muazwzxv.cardservice.entities.TransactionEntity;
 import com.muazwzxv.cardservice.enums.card.CardStatus;
 import com.muazwzxv.cardservice.exceptions.ResourceNotFoundException;
 import com.muazwzxv.cardservice.exceptions.cardsException.CardNotEligibleForTransaction;
+import com.muazwzxv.cardservice.exceptions.transactionsException.InvalidTransactionTypeException;
 import com.muazwzxv.cardservice.mapper.CardMapper;
+import com.muazwzxv.cardservice.mapper.TransactionMapper;
 import com.muazwzxv.cardservice.repositories.CardRepository;
 import com.muazwzxv.cardservice.repositories.TransactionRepository;
 import com.muazwzxv.cardservice.services.transaction.payload.TransactionRequest;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
 import java.util.UUID;
 
 @Service
+@Slf4j
 @AllArgsConstructor
 public class TransactionServiceImpl implements ITransactionService {
     private TransactionRepository transactionRepository;
     private CardRepository cardRepository;
     private CardMapper cardMapper;
+    private TransactionMapper transactionMapper;
 
     @Override
     public TransactionDto triggerTransaction(TransactionRequest req) {
@@ -31,8 +36,7 @@ public class TransactionServiceImpl implements ITransactionService {
             case "CHARGE" -> this.chargeCard(req, cardDto);
             case "REFUND" -> this.refundCard(req, cardDto);
             default ->
-                // TODO: throw exception here
-                null;
+                throw new InvalidTransactionTypeException(req.getCardUUID(), req.getTransactionType());
         };
     }
 
@@ -49,15 +53,24 @@ public class TransactionServiceImpl implements ITransactionService {
     }
 
     public TransactionDto chargeCard(TransactionRequest req, CardDto cardDto) {
-        // TODO: handle charge transaction
-        TransactionEntity transaction = TransactionEntity.builder()
+        TransactionEntity chargeTransactionEntity = TransactionEntity.builder()
             .transactionUUID(UUID.randomUUID().toString())
             .cardUUID(req.getCardUUID())
             .type("CHARGE")
             .status("PROCESSING")
             .build();
+        this.transactionRepository.saveAndFlush(chargeTransactionEntity);
 
-        return null;
+        // simulate publishing message to downstream who cares about this
+        log.info("simulate publishing transaction event, {}", chargeTransactionEntity);
+
+        chargeTransactionEntity.setStatus("COMPLETED");
+        this.transactionRepository.saveAndFlush(chargeTransactionEntity);
+
+        // simulate publishing message to downstream who cares about this
+        log.info("simulate publishing transaction event, {}", chargeTransactionEntity);
+
+        return this.transactionMapper.toDto(chargeTransactionEntity);
     }
 
     public TransactionDto refundCard(TransactionRequest req, CardDto cardDto) {
@@ -73,8 +86,16 @@ public class TransactionServiceImpl implements ITransactionService {
 
         this.transactionRepository.saveAndFlush(refundTransactionEntity);
 
-        // TODO: create transaction mapper
-        return null;
+        // simulate publishing message to downstream who cares about this
+        log.info("simulate publishing transaction event, {}", refundTransactionEntity);
+
+        refundTransactionEntity.setStatus("COMPLETED");
+        this.transactionRepository.saveAndFlush(refundTransactionEntity);
+
+        // simulate publishing message to downstream who cares about this
+        log.info("simulate publishing transaction event, {}", refundTransactionEntity);
+
+        return this.transactionMapper.toDto(refundTransactionEntity);
     }
 
 }
